@@ -19,6 +19,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
+    //new user registration
     @Transactional
     public UserResponseDTO createUser(UserRegisterDTO userRegisterDTO) {
         if(userRepository.existsByEmail(userRegisterDTO.getEmail()).isPresent()){
@@ -41,6 +43,7 @@ public class UserService {
         return new UserResponseDTO(saveUser);
     }
 
+    //basic login with id and password
     public UserResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmpId(userLoginDTO.getEmpId())
                 .orElseThrow(() -> new RuntimeException("User not found with this ID"));
@@ -54,6 +57,9 @@ public class UserService {
     }
 
 
+
+
+    //verify entered password with stored password
     public boolean verifyPassword(String rawPassword, User user) {
         return passwordEncoder.matches(rawPassword, user.getPassword());
     }

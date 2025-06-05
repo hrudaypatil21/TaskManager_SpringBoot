@@ -23,11 +23,11 @@ public class User {
     @Column(name = "emp_name", nullable = false)
     private String name;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(name = "roles", nullable = false)
     private Role role = Role.USER; // Default role is USER
 
     public enum Role {
