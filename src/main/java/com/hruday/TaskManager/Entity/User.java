@@ -1,12 +1,13 @@
 package com.hruday.TaskManager.Entity;
 
+import com.hruday.TaskManager.Password.PasswordUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +34,12 @@ public class User {
         USER,
         ADMIN
     }
+
+//    public void setPassword(String password) {
+//        this.password = PasswordUtil.hashPassword(password);
+//    }
+//
+//    public boolean verifyPassword(String password) {
+//        return password.isEmpty() || PasswordUtil.verifyPassword(password, this.password);
+//    }
 }
