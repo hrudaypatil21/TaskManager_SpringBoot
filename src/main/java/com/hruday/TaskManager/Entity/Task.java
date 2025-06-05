@@ -31,7 +31,6 @@ public class Task {
     @Column(name = "due_date", nullable = false)
     private LocalDateTime dueDate;
 
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status = Status.TODO;

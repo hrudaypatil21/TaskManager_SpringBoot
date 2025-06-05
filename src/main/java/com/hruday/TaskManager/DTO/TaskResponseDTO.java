@@ -21,4 +21,14 @@ public class TaskResponseDTO {
     private LocalDateTime assignedDate;
     private LocalDateTime dueDate;
 
+    public TaskResponseDTO(Task task) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.assignedBy = assignedBy;
+        this.assignedTo = assignedTo;
+        this.status = status;
+        this.assignedDate = assignedDate;
+        this.dueDate = dueDate;
+    }
 }

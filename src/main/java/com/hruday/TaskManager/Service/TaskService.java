@@ -3,6 +3,7 @@ package com.hruday.TaskManager.Service;
 
 import com.hruday.TaskManager.DTO.CreateTaskDTO;
 import com.hruday.TaskManager.DTO.TaskResponseDTO;
+import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Repository.UserRepository;
@@ -38,6 +39,20 @@ public class TaskService {
         ) {
             throw new RuntimeException("Only Admin can assign tasks to other users or users can assign tasks to themselves");
         }
+
+        Task task = new Task();
+        task.setTitle(createTaskDTO.getTitle());
+        task.setDescription(createTaskDTO.getDescription());
+        task.setStatus(createTaskDTO.getStatus());
+        task.setDueDate(createTaskDTO.getDueDate());
+        task.setAssignedBy(userRepository.findByEmpId(createTaskDTO.getAssignedBy().getEmpId())
+                .orElseThrow(() -> new RuntimeException("User not found with this ID")));
+        task.setAssignedTo(userRepository.findByEmpId(createTaskDTO.getAssignedTo().getEmpId())
+                .orElseThrow(() -> new RuntimeException("User not found with this ID")));
+        Task savedTask = taskRepository.save(task);
+
+        return new TaskResponseDTO(savedTask);
+
     }
 
 }
