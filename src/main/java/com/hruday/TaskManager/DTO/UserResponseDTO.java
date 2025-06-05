@@ -6,13 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserRegisterDTO {
+@NoArgsConstructor
+public class UserResponseDTO {
 
     private String empId;
     private String email;
-    private String password;
-    private User.Role role = User.Role.USER;
+    private User.Role role;
+
+    public UserResponseDTO(User user) {
+        this.empId = user.getEmpId();
+        this.email = user.getEmail();
+        this.role = user.getRole();
+    }
 
 }
