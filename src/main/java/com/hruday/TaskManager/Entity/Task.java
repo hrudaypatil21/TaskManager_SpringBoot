@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "task")
@@ -24,19 +25,30 @@ public class Task {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "assigned_date", nullable = false)
+    private LocalDateTime assignedDate = LocalDateTime.now();
+
     @Column(name = "due_date", nullable = false)
-    private LocalDate dueDate;
+    private LocalDateTime dueDate;
 
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status = Status.TODO;
 
+    @ManyToOne
+    @JoinColumn(name = "emp_id", nullable = false)
+    private User user;
+
     public enum Status {
         TODO,
         IN_PROGRESS,
         DONE
 
+
+    }
+
+}
 //        private final String displayName;
 //
 //        Status(String displayName) {
@@ -47,9 +59,3 @@ public class Task {
 //        public String toString() {
 //            return displayName;
 //        }
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-}

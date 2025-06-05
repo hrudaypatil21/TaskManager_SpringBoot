@@ -42,11 +42,15 @@ public class UserService {
     }
 
     public UserResponseDTO loginUser(UserLoginDTO userLoginDTO) {
-        if(userRepository.findByEmpId(userLoginDTO.getEmpId()).isEmpty()) {
-            throw new RuntimeException("User with this ID does not exist");
+        User user = userRepository.findByEmpId(userLoginDTO.getEmpId())
+                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
+
+
+        if(!verifyPassword(userLoginDTO.getPassword(), user)) {
+            throw new RuntimeException("Invalid password");
         }
 
-        if(userRepository.v)
+        return new UserResponseDTO(user);
     }
 
 
