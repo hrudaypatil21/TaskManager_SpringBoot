@@ -37,17 +37,19 @@ public class Task {
     private Status status = Status.TODO;
 
     @ManyToOne
-    @JoinColumn(name = "emp_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "assigned_by_id", nullable = false)
+    private User assignedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_to_id", nullable = false)
+    private User assignedTo;
+
 
     public enum Status {
         TODO,
         IN_PROGRESS,
         DONE
-
-
     }
-
 }
 //        private final String displayName;
 //
