@@ -31,21 +31,21 @@ public class Task {
     @Column(name = "status", nullable = false)
     private Status status = Status.TODO;
 
-    private enum Status {
-        TODO("To Do"),
-        IN_PROGRESS("In Progress"),
-        DONE("Done");
+    public enum Status {
+        TODO,
+        IN_PROGRESS,
+        DONE
 
-        private final String displayName;
-
-        Status(String displayName) {
-            this.displayName = displayName;
-        }
-
-        @Override
-        public String toString() {
-            return displayName;
-        }
+//        private final String displayName;
+//
+//        Status(String displayName) {
+//            this.displayName = displayName;
+//        }
+//
+//        @Override
+//        public String toString() {
+//            return displayName;
+//        }
     }
 
     @ManyToOne
