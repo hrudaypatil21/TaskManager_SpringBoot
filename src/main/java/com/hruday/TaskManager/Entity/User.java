@@ -20,6 +20,9 @@ public class User {
     @Column(name = "emp_email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "emp_name", nullable = false)
+    private String name;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -31,7 +34,7 @@ public class User {
         USER,
         ADMIN
     }
-
+}
 //    public void setPassword(String password) {
 //        this.password = PasswordUtil.hashPassword(password);
 //    }
@@ -39,4 +42,3 @@ public class User {
 //    public boolean verifyPassword(String password) {
 //        return password.isEmpty() || PasswordUtil.verifyPassword(password, this.password);
 //    }
-}
