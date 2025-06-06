@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+
 @Service
 public class UserService {
 
@@ -35,8 +37,14 @@ public class UserService {
         newUser.setEmpId(userRegisterDTO.getEmpId());
         newUser.setEmail(userRegisterDTO.getEmail());
         newUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        newUser.setRole(userRegisterDTO.getRole() != null ?
-         userRegisterDTO.getRole() : User.Role.USER);
+
+        Set<User.Role> roles = userRegisterDTO.getRoles();
+        newUser.setRoles(
+                roles == null || roles.isEmpty() ?
+                        Set.of(User.Role.USER) : roles
+        );
+//        newUser.setRole(userRegisterDTO.getRole() != null ?
+//         userRegisterDTO.getRole() : User.Role.USER);
 
         User saveUser = userRepository.save(newUser);
 

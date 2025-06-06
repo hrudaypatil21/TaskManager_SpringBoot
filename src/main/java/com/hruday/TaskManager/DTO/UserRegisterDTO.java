@@ -9,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -22,6 +23,8 @@ public class UserRegisterDTO {
     @Size(min = 8)
     private String password;
     @NotNull
-    private User.Role role = User.Role.USER;
+    private Set<User.Role> roles = Set.of(User.Role.USER);
+//    @NotNull
+//    private User.Role role = User.Role.USER;
 
 }
