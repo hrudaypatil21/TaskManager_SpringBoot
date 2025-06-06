@@ -3,6 +3,7 @@ package com.hruday.TaskManager.Service;
 
 import com.hruday.TaskManager.DTO.TaskDTO.CreateTaskDTO;
 import com.hruday.TaskManager.DTO.TaskDTO.TaskResponseDTO;
+import com.hruday.TaskManager.DTO.TaskDTO.UpdateTaskDTO;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.TaskRepository;
@@ -60,6 +61,37 @@ public class TaskService {
 
         return new TaskResponseDTO(savedTask);
 
+    }
+
+    public TaskResponseDTO updateTask(UpdateTaskDTO updateTaskDTO) {
+        Task task = taskRepository.findById(updateTaskDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Task not found with id " + updateTaskDTO.getId()));
+
+        if (updateTaskDTO.getTitle() != null) {
+            task.setTitle(updateTaskDTO.getTitle());
+        }
+
+        if (updateTaskDTO.getDescription() != null) {
+            task.setDescription(updateTaskDTO.getDescription());
+        }
+
+        if (updateTaskDTO.getDueDate() != null) {
+            task.setDueDate(updateTaskDTO.getDueDate());
+        }
+
+        if (updateTaskDTO.getStatus() != null) {
+            task.setStatus(updateTaskDTO.getStatus());
+        }
+
+        if (updateTaskDTO.getAssignedToId() != null) {
+            User assignedTo = userRepository.findByEmpId(updateTaskDTO.getAssignedToId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id " + updateTaskDTO.getAssignedToId()));
+            task.setAssignedTo(assignedTo);
+
+        }
+        Task updatedTask = taskRepository.save(task);
+
+        return new TaskResponseDTO(updatedTask);
     }
 
 
