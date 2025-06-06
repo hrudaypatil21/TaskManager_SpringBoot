@@ -34,6 +34,8 @@ public class User {
         USER,
         ADMIN
     }
+
+
 }
 //    public void setPassword(String password) {
 //        this.password = PasswordUtil.hashPassword(password);

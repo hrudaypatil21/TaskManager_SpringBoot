@@ -35,5 +35,20 @@ public class JwtService {
         return claims.getSubject();
     }
 
+    public boolean validateToken(String token, User user) {
+        final String empId = extractEmpId(token);
+
+        return (empId.equals(user.getEmpId()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build()
+                .parseClaimsJwt(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
+    }
 
 }
