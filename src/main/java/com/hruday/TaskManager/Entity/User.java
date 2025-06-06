@@ -40,8 +40,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
         public enum Role {
-        USER,
-        ADMIN
+        ROLE_USER,
+        ROLE_ADMIN
     }
 
 

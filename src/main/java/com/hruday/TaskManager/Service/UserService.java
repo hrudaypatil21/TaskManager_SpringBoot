@@ -41,7 +41,7 @@ public class UserService {
         Set<User.Role> roles = userRegisterDTO.getRoles();
         newUser.setRoles(
                 roles == null || roles.isEmpty() ?
-                        Set.of(User.Role.USER) : roles
+                        Set.of(User.Role.ROLE_USER) : roles
         );
 //        newUser.setRole(userRegisterDTO.getRole() != null ?
 //         userRegisterDTO.getRole() : User.Role.USER);
@@ -65,10 +65,10 @@ public class UserService {
         return new UserResponseDTO(user);
     }
 
-    public UserResponseDTO logoutUser(String empId) {
-
-
-    }
+//    public UserResponseDTO logoutUser(String empId) {
+//
+//
+//    }
 
 
     //verify entered password with stored password

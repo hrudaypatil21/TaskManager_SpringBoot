@@ -23,7 +23,7 @@ public class UserRegisterDTO {
     @Size(min = 8)
     private String password;
     @NotNull
-    private Set<User.Role> roles = Set.of(User.Role.USER);
+    private Set<User.Role> roles = Set.of(User.Role.ROLE_USER);
 //    @NotNull
 //    private User.Role role = User.Role.USER;
 

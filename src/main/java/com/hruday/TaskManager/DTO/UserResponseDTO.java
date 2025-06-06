@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,12 +14,12 @@ public class UserResponseDTO {
 
     private String empId;
     private String email;
-    private User.Role role;
+    private Set<User.Role> roles;
 
     public UserResponseDTO(User user) {
         this.empId = user.getEmpId();
         this.email = user.getEmail();
-        this.role = user.getRole();
+        this.roles = user.getRoles();
     }
 
 }
