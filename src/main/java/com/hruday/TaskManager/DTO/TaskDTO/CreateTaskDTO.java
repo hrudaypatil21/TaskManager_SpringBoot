@@ -1,4 +1,4 @@
-package com.hruday.TaskManager.DTO;
+package com.hruday.TaskManager.DTO.TaskDTO;
 
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,10 +15,9 @@ public class CreateTaskDTO {
 
     private String title;
     private String description;
-    private User assignedBy;
-    private User assignedTo;
+    private String assignedById;
+    private String assignedToId;
     private Task.Status status;
-    private LocalDateTime assignedDate;
     private LocalDateTime dueDate;
 
 }

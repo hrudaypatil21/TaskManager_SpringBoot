@@ -1,4 +1,4 @@
-package com.hruday.TaskManager.DTO;
+package com.hruday.TaskManager.DTO.TaskDTO;
 
 import com.hruday.TaskManager.Entity.Task;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TaskResponseDTO {
 
-    private String id;
+    private Long id;
     private String title;
     private String description;
     private String assignedBy;
@@ -22,13 +22,13 @@ public class TaskResponseDTO {
     private LocalDateTime dueDate;
 
     public TaskResponseDTO(Task task) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.assignedBy = assignedBy;
-        this.assignedTo = assignedTo;
-        this.status = status;
-        this.assignedDate = assignedDate;
-        this.dueDate = dueDate;
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.assignedBy = task.getAssignedBy().getName();
+        this.assignedTo = task.getAssignedTo().getName();
+        this.status = task.getStatus();
+        this.assignedDate = task.getAssignedDate();
+        this.dueDate = task.getDueDate();
     }
 }
