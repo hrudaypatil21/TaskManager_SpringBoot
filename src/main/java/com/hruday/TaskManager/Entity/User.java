@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -15,6 +18,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Integer id;
 
     @Column(name = "emp_id", nullable = false, unique = true)
@@ -29,15 +33,22 @@ public class User {
     @Column(name = "user_password", nullable = false)
     private String password;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @Column(name = "roles", nullable = false)
-    private Role role = Role.USER; // Default role is USER
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
+    private Set<Role> roles = new HashSet<>();
 
-    public enum Role {
+        public enum Role {
         USER,
         ADMIN
     }
 
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "roles", nullable = false)
+//    private Role role = Role.USER; // Default role is USER
+//
 
 }
 //    public void setPassword(String password) {
