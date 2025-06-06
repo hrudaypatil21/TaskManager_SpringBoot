@@ -11,6 +11,8 @@ import com.hruday.TaskManager.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TaskService {
 
@@ -94,5 +96,23 @@ public class TaskService {
         return new TaskResponseDTO(updatedTask);
     }
 
+    public void deleteTask(Long taskId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with id " + taskId));
+
+        taskRepository.delete(task);
+    }
+
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
+    }
+
+    public List<Task> getTasksByUserId(String empId) {
+        List<Task> tasks = taskRepository.findByUserEmpId(empId);
+        if (tasks.isEmpty()) {
+            throw new RuntimeException("No tasks found for user with ID " + empId);
+        }
+        return tasks;
+    }
 
 }
