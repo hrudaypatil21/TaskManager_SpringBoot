@@ -44,6 +44,7 @@ public class UserService {
     }
 
     //basic login with id and password
+    @Transactional
     public UserResponseDTO loginUser(UserLoginDTO userLoginDTO) {
         User user = userRepository.findByEmpId(userLoginDTO.getEmpId())
                 .orElseThrow(() -> new RuntimeException("User not found with this ID"));
@@ -56,7 +57,10 @@ public class UserService {
         return new UserResponseDTO(user);
     }
 
+    public UserResponseDTO logoutUser(String empId) {
 
+
+    }
 
 
     //verify entered password with stored password

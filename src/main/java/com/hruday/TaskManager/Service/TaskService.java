@@ -10,6 +10,7 @@ import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +28,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
+    @Transactional
     public TaskResponseDTO createTask(CreateTaskDTO createTaskDTO) {
 //        User user = userRepository.findByEmpId(createTaskDTO.getAssignedBy().getEmpId())
 //                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
@@ -65,6 +67,7 @@ public class TaskService {
 
     }
 
+    @Transactional
     public TaskResponseDTO updateTask(UpdateTaskDTO updateTaskDTO) {
         Task task = taskRepository.findById(updateTaskDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Task not found with id " + updateTaskDTO.getId()));
@@ -96,11 +99,9 @@ public class TaskService {
         return new TaskResponseDTO(updatedTask);
     }
 
+    @Transactional
     public void deleteTask(Long taskId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found with id " + taskId));
-
-        taskRepository.delete(task);
+        taskRepository.deleteById(taskId);
     }
 
     public List<Task> getAllTasks() {
