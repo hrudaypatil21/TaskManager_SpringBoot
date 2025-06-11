@@ -12,7 +12,7 @@
 <div>
     <h1>Task Management System</h1>
     <div>
-        <h2>Login</h2>
+        <h2>Register new Employee</h2>
         <form hx-post="/api/auth/register"
               hx-swap="none"
               class="space-y-4">
@@ -42,19 +42,11 @@
 
             <!-- Role Selection (for admin use) -->
             <div class="space-y-2">
-                <label class="block mb-1">Roles</label>
-
-                <div class="flex items-center">
-                    <input type="checkbox" id="roleUser" name="roles"
-                           value="ROLE_USER" checked class="mr-2">
-                    <label for="roleUser">Regular User</label>
-                </div>
-
-                <div class="flex items-center">
-                    <input type="checkbox" id="roleAdmin" name="roles"
-                           value="ROLE_ADMIN" class="mr-2">
-                    <label for="roleAdmin">Administrator</label>
-                </div>
+                    <label for="role">Role:</label>
+                    <select id="role" name="roles" class="ml-2 p-2 border rounded">
+                        <option value="ROLE_ADMIN">Admin</option>
+                        <option value="ROLE_USER" selected>Regular User</option>
+                    </select>
             </div>
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">

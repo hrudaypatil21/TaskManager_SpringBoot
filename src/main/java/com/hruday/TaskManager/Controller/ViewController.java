@@ -18,4 +18,13 @@ public class ViewController {
         return "login";
     }
 
+    @GetMapping("/admin-dashboard")
+    public String showAdminDashboard() {
+        return "admin-dashboard";
+    }
+
+    @GetMapping("/dashboard")
+    public String showUserDashboard() {
+        return "user-dashboard";
+    }
 }
