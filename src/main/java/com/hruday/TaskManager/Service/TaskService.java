@@ -9,6 +9,9 @@ import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +28,6 @@ public class TaskService {
 
     @Transactional
     public TaskResponseDTO createTask(CreateTaskDTO createTaskDTO) {
-//        User user = userRepository.findByEmpId(createTaskDTO.getAssignedBy().getEmpId())
-//                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
-//
-//        if (user.getRole() == User.Role.ADMIN || Objects.equals(user.getEmpId(), createTaskDTO.getAssignedTo().getEmpId())) {
-//
-//        }
 
         User assignedBy = userRepository.findByEmpId(createTaskDTO.getAssignedById())
                 .orElseThrow(() -> new RuntimeException("Assigner not found"));
@@ -38,21 +35,10 @@ public class TaskService {
         User assignedTo = userRepository.findByEmpId(createTaskDTO.getAssignedToId())
                 .orElseThrow(() -> new RuntimeException("Assignee not found"));
 
-//        if(createTaskDTO.getAssignedBy().getRole() != User.Role.ADMIN ||
-//                createTaskDTO.getAssignedBy().getRole() != createTaskDTO.getAssignedTo().getRole()
-//        ) {
-//            throw new RuntimeException("Only Admin can assign tasks to other users or users can assign tasks to themselves");
-//        }
-
-        boolean isAdmin = assignedBy.getRoles().contains(User.Role.ROLE_ADMIN);
-        boolean selfAssign = assignedBy.getRoles().equals(assignedTo.getRoles());
-
-        if(isAdmin) {
-            System.out.println("Admin assigning");
-        } else if (selfAssign) {
-            System.out.println("Self assigning");
-        } else {
-            throw new RuntimeException("Only admins can assign tasks to others");
+        if (!assignedBy.getRoles().contains(User.Role.ROLE_ADMIN)) {
+            if (!assignedBy.getEmpId().equals(assignedTo.getEmpId())) {
+                throw new RuntimeException("Only admins can assign tasks to others");
+            }
         }
 
 //        if (!assignedBy.getRoles().contains(User.Role.ROLE_ADMIN)
@@ -78,6 +64,17 @@ public class TaskService {
         Task task = taskRepository.findById(updateTaskDTO.getId())
                 .orElseThrow(() -> new RuntimeException("Task not found with id " + updateTaskDTO.getId()));
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+
+        if(updateTaskDTO.getAssignedToId() != null) {
+            User assignedTo = userRepository.findByEmpId(updateTaskDTO.getAssignedToId())
+                    .orElseThrow(() -> new RuntimeException("User not found with id " + updateTaskDTO.getAssignedToId()));
+            task.setAssignedTo(assignedTo);
+
+            System.out.println("Task assigned by: " + currentUser.getEmpId());
+        }
+
         if (updateTaskDTO.getTitle() != null) {
             task.setTitle(updateTaskDTO.getTitle());
         }
@@ -94,12 +91,6 @@ public class TaskService {
             task.setStatus(updateTaskDTO.getStatus());
         }
 
-        if (updateTaskDTO.getAssignedToId() != null) {
-            User assignedTo = userRepository.findByEmpId(updateTaskDTO.getAssignedToId())
-                    .orElseThrow(() -> new RuntimeException("User not found with id " + updateTaskDTO.getAssignedToId()));
-            task.setAssignedTo(assignedTo);
-
-        }
         Task updatedTask = taskRepository.save(task);
 
         return new TaskResponseDTO(updatedTask);

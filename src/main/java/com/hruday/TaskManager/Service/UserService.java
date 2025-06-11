@@ -6,6 +6,8 @@ import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.UserRepository;
 //import com.hruday.TaskManager.Security.CustomUserDetailsService;
+//import com.hruday.TaskManager.Security.JwtResponse;
+//import com.hruday.TaskManager.Security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
+
+//new user registration
+@Transactional
 @Service
 public class UserService {
 
@@ -23,24 +28,12 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
-//
-//    @Autowired
-//    private JwtUtil jwtUtil;
-
-//    @Autowired
-//    private CustomUserDetailsService userDetailsService;
-
-    //new user registration
-    @Transactional
     public UserResponseDTO createUser(UserRegisterDTO userRegisterDTO) {
-        if(userRepository.existsByEmail(userRegisterDTO.getEmail())){
+        if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
             throw new RuntimeException("User with this email already exists");
         }
 
-        if(userRepository.existsByEmpId(userRegisterDTO.getEmpId())){
+        if (userRepository.existsByEmpId(userRegisterDTO.getEmpId())) {
             throw new RuntimeException("User with this ID already exists");
         }
 
@@ -55,66 +48,20 @@ public class UserService {
                 roles == null || roles.isEmpty() ?
                         Set.of(User.Role.ROLE_USER) : roles
         );
-//        newUser.setRole(userRegisterDTO.getRole() != null ?
-//         userRegisterDTO.getRole() : User.Role.USER);
 
         User savedUser = userRepository.save(newUser);
 
         return new UserResponseDTO(savedUser);
     }
-
-    public User authenticateUser(String empId, String password) {
-        User user = userRepository.findByEmpId(empId)
-                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
-
-        if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
-
-        return user;
-    }
-
-    //basic login with id and password
-//    @Transactional
-//    public JwtResponse loginUser(UserLoginDTO userLoginDTO) {
-//        User user = userRepository.findByEmpId(userLoginDTO.getEmpId())
+}
+//    public User authenticateUser(String empId, String password) {
+//        User user = userRepository.findByEmpId(empId)
 //                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
 //
-//
-//        if(!verifyPassword(userLoginDTO.getPassword(), user)) {
+//        if(!passwordEncoder.matches(password, user.getPassword())) {
 //            throw new RuntimeException("Invalid password");
 //        }
-////
-////        return new UserResponseDTO(user);
 //
-//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-//                userLoginDTO.getEmpId(),
-//                userLoginDTO.getPassword()
-//        ));
-//
-////        final UserDetails userDetails = userDetailsService.loadUserByUsername(userLoginDTO.getEmpId());
-////        final String token = jwtUtil.generateToken(userDetails);
-//
-//        final String token = jwtUtil.generateToken(new org.springframework.security.core.userdetails.User(
-//                user.getEmpId(),
-//                user.getPassword(),
-//                user.getAuthorities()
-//        ));
-//
-//        return new JwtResponse(token);
-//
+//        return user;
 //    }
-//
-//    @Transactional
-//    public void logoutUser(String token) {
-//
-//    }
-//    //verify entered password with stored password
-//    public boolean verifyPassword(String rawPassword, User user) {
-//        return passwordEncoder.matches(rawPassword, user.getPassword());
-//    }
-}
-//    public UserResponseDTO logoutUser(String empId) {
-//
-//
-//    }
+

@@ -9,8 +9,10 @@ import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,38 +22,40 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @Autowired
-    private UserService userService;
-
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #empId == authentication.principal.username")
     @GetMapping("/user/{empId}")
     public ResponseEntity<List<Task>> getTasksByUser(@PathVariable String empId) {
         List<Task> tasks = taskService.getTasksByUserId(empId);
         return ResponseEntity.ok(tasks);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<List<Task>> getAllTasks() {
         List<Task> allTasks = taskService.getAllTasks();
         return ResponseEntity.ok(allTasks);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #createTaskDTO.assignedToId == authentication.principal.username")
     @PostMapping("/create")
-    public ResponseEntity<TaskResponseDTO> createTask(@RequestBody CreateTaskDTO createTaskDTO) {
+    public ResponseEntity<TaskResponseDTO> createTask(@Valid @RequestBody CreateTaskDTO createTaskDTO) {
         TaskResponseDTO newTask = taskService.createTask(createTaskDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
     }
 
+    @PreAuthorize("@taskSecurityService.canUpdateTask(authentication.principal.username, #taskId)")
     @PutMapping("/update/{taskId}")
-    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long taskId, @RequestBody UpdateTaskDTO updateTaskDTO) {
+    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long taskId,
+                                                      @Valid @RequestBody UpdateTaskDTO updateTaskDTO) {
         updateTaskDTO.setId(taskId);
         TaskResponseDTO updatedTask = taskService.updateTask(updateTaskDTO);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedTask);
     }
 
-    @DeleteMapping("/delete/task{Id}")
-    public ResponseEntity<Void> deleteTask(@RequestParam Long taskId) {
-        TaskResponseDTO deletedTask = taskService.deleteTask(taskId);
+    @PreAuthorize("@taskSecurityService.canDeleteTask(authentication.principal.username, #taskId)")
+    @DeleteMapping("/delete/{taskId}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
+        taskService.deleteTask(taskId);
         return ResponseEntity.noContent().build();
     }
 }
