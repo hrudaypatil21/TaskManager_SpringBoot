@@ -133,10 +133,12 @@
     margin-right: 4px;
   }
 
-  .password :hover {
-      color: #ffffff;
-        }
 
+ button:hover {
+    background-color: #FFBF00;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
     </style>
 </head>
 <body>
@@ -144,7 +146,12 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
-<form method="post" action="/login">
+<form method="post" action="/login" autocomplete="off">
+
+    <input type="text" name="fakeuser" autocomplete="username" style="display:none">
+    <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
+
+
     <h3>Login</h3>
 
     <label for="username">Employee ID</label>
