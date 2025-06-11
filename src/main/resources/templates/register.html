@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark" />
+    <title>Task Management System</title>
+    <link rel="stylesheet" href="/css/login.css" />
+    <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+</head>
+<body>
+<div>
+    <h1>Task Management System</h1>
+    <div>
+        <h2>Login</h2>
+        <form hx-post="/api/auth/register"
+              hx-swap="none"
+              class="space-y-4">
+            <div>
+                <label for="empId" class="block mb-1">Employee ID</label>
+                <input type="text" id="empId" name="empId" required
+                       class="w-full p-2 border rounded">
+            </div>
+
+            <div>
+                <label for="email" class="block mb-1">Email</label>
+                <input type="email" id="email" name="email" required
+                       class="w-full p-2 border rounded">
+            </div>
+
+            <div>
+                <label for="name" class="block mb-1">Full Name</label>
+                <input type="text" id="name" name="name" required
+                       class="w-full p-2 border rounded">
+            </div>
+
+            <div>
+                <label for="password" class="block mb-1">Password</label>
+                <input type="password" id="password" name="password" required
+                       class="w-full p-2 border rounded">
+            </div>
+
+            <!-- Role Selection (for admin use) -->
+            <div class="space-y-2">
+                <label class="block mb-1">Roles</label>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="roleUser" name="roles"
+                           value="ROLE_USER" checked class="mr-2">
+                    <label for="roleUser">Regular User</label>
+                </div>
+
+                <div class="flex items-center">
+                    <input type="checkbox" id="roleAdmin" name="roles"
+                           value="ROLE_ADMIN" class="mr-2">
+                    <label for="roleAdmin">Administrator</label>
+                </div>
+            </div>
+
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+                Register
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
