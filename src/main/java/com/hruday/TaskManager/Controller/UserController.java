@@ -16,13 +16,13 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/search")
-    public String searchUsers(@RequestParam String query, Model model) {
-        List<User> users = userService.searchUsers(query);
+    public String searchUsers(@RequestParam String userSearch, Model model) {
+        List<User> users = userService.searchUsers(userSearch);
         model.addAttribute("users", users);
         return "fragments/user-search-results :: results";
     }
 
-    @GetMapping("/select/{id}")
+    @GetMapping("/select/{empId}")
     public String selectUser(@PathVariable String empId, Model model) {
         User user = userService.getUserByEmpId(empId);
         model.addAttribute("user", user);

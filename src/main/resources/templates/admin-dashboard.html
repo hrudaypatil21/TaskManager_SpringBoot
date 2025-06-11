@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,6 +9,35 @@
     <script src="https://unpkg.com/htmx.org@2.0.1"></script>
 </head>
 <body>
+<div>
+    <form
+            th:action="@{/api/tasks/create}"
+            method="post"
+            hx-post="/api/tasks/create"
+            hx-target="#taskContainer"
+            hx-swap="beforebegin"
+            hx-on="htmx:afterRequest: this.remove();">
 
+        <input type="text" name="title" required class="w-full p-2 border rounded" placeholder="Enter title" >
+        <textarea name="description" placeholder="Enter description"></textarea>
+        <input type="datetime-local" name="dueDate" class="w-full p-2 border rounded" required>
+
+        <input type="text"
+               name="userSearch"
+               hx-post="/api/users/search"
+               hx-target="#userSearchResults"
+               hx-swap="innerHTML"
+               autocomplete="off"
+               class="w-full p-2 border rounded"
+               placeholder="Search user">
+        <div id="userSearchResults"></div>
+        <div id="selectedUser" class="mt-2"></div>
+
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Create
+        </button>
+
+    </form>
+</div>
 </body>
 </html>

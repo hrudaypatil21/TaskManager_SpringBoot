@@ -10,9 +10,9 @@
         <li th:each="user : ${users}">
             <button
                     type="button"
-                    hx-get="@{`/api/users/select/` + ${user.id}}"
+                    hx-get="@{/api/users/select/} + ${user.id}}"
                     hx-target="selectedUser"
-                    hx-swap="outerHTML"
+                    hx-swap="innerHTML"
             class="w-full p-2 border rounded">
                 <span th:text="${user.name}">
                     User Name
