@@ -25,4 +25,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByAssignedToEmpId(String empId);
     List<Task> findByAssignedByEmpId(String empId);
 
+
 }

@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -28,6 +29,8 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Transactional
     public UserResponseDTO createUser(UserRegisterDTO userRegisterDTO) {
         if (userRepository.existsByEmail(userRegisterDTO.getEmail())) {
             throw new RuntimeException("User with this email already exists");
@@ -53,6 +56,19 @@ public class UserService {
 
         return new UserResponseDTO(savedUser);
     }
+
+    public List<User> searchUsers(String query) {
+        if (query == null || query.isEmpty()) {
+            return userRepository.findAll();
+        }
+        return userRepository.findByNameAndIdContainingIgnoreCase(query);
+    }
+
+    public User getUserByEmpId(String empId) {
+        return userRepository.findByEmpId(empId)
+                .orElseThrow(() -> new RuntimeException("User not found with this ID"));
+    }
+
 }
 //    public User authenticateUser(String empId, String password) {
 //        User user = userRepository.findByEmpId(empId)

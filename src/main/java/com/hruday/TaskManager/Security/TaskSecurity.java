@@ -23,7 +23,7 @@ public class TaskSecurity {
         if (task == null) return false;
 
         boolean isAdmin = user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
         return isAdmin ||
                 task.getAssignedTo().getEmpId().equals(user.getEmpId()) ||

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
+<head>
+    <meta charset="UTF-8">
+    <title>Task Management System</title>
+</head>
+<body>
+
+<div class="task-card">
+    <h3 th:text="${task.title}">Task Title</h3>
+    <p th:text="${task.description}">Task Description</p>
+    <small>Status: <span th:text="${task.status}">TODO</span></small>
+    <small>Due: <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}">Date</span></small>
+</div>
+
+</body>
+</>
