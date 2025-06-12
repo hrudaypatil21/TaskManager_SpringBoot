@@ -1,0 +1,12 @@
+<div th:fragment="results">
+<ul class="user-suggestion-list" >
+        <li th:each="user : ${users}"
+            th:data-user-id="${user.id}"
+            th:onclick="selectUser(this)"
+            th:text="${user.empId + ' - ' + user.empName}">
+        </li>
+        <li th:if="${users.size() == 0}">
+            No users found.
+        </li>
+    </ul>
+</div>

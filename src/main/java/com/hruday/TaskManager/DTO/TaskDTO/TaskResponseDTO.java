@@ -25,8 +25,8 @@ public class TaskResponseDTO {
         this.id = task.getId();
         this.title = task.getTitle();
         this.description = task.getDescription();
-        this.assignedBy = task.getAssignedBy().getName();
-        this.assignedTo = task.getAssignedTo().getName();
+        this.assignedBy = task.getAssignedBy().getEmpName();
+        this.assignedTo = task.getAssignedTo().getEmpName();
         this.status = task.getStatus();
         this.assignedDate = task.getAssignedDate();
         this.dueDate = task.getDueDate();

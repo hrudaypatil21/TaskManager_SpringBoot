@@ -15,12 +15,12 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/search")
-    public String searchUsers(@RequestParam String userSearch, Model model) {
-        List<User> users = userService.searchUsers(userSearch);
-        model.addAttribute("users", users);
-        return "fragments/user-search-results :: results";
-    }
+//    @PostMapping("/search")
+//    public String searchUsers(@RequestParam("assignedToId") String query, Model model) {
+//        List<User> users = userService.searchUsers(query);
+//        model.addAttribute("users", users);
+//        return "fragments/user-suggestions :: results";
+//    }
 
     @GetMapping("/select/{empId}")
     public String selectUser(@PathVariable String empId, Model model) {

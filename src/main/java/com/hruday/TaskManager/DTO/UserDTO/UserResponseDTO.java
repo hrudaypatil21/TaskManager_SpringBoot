@@ -25,7 +25,7 @@ public class UserResponseDTO implements UserDetails {
     public UserResponseDTO(User user) {
         this.empId = user.getEmpId();
         this.email = user.getEmail();
-        this.name = user.getName();
+        this.name = user.getEmpName();
         this.roles = user.getRoles();
     }
 

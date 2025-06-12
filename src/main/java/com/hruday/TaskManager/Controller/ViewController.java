@@ -1,14 +1,14 @@
 package com.hruday.TaskManager.Controller;
 
 import com.hruday.TaskManager.Entity.Task;
+import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Service.TaskService;
+import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,6 +18,9 @@ public class ViewController {
 
     @Autowired
     private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/register")
     public String showRegistrationForm() {
@@ -64,4 +67,12 @@ public class ViewController {
                         .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
         return "fragments/task-form :: taskForm";
     }
+
+    @GetMapping("/searchuser")
+    public String searchUsers(@RequestParam("query") String query, Model model) {
+        List<User> users = userService.searchUsers(query);
+        model.addAttribute("users", users);
+        return "fragments/user-suggestions :: results";
+    }
+
 }

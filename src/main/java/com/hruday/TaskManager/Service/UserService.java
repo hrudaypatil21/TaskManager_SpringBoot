@@ -43,7 +43,7 @@ public class UserService {
         User newUser = new User();
         newUser.setEmpId(userRegisterDTO.getEmpId());
         newUser.setEmail(userRegisterDTO.getEmail());
-        newUser.setName(userRegisterDTO.getName());
+        newUser.setEmpName(userRegisterDTO.getName());
         newUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
 
         Set<User.Role> roles = userRegisterDTO.getRoles();

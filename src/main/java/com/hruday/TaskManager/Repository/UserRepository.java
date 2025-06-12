@@ -3,6 +3,7 @@ package com.hruday.TaskManager.Repository;
 import com.hruday.TaskManager.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     boolean existsByEmpId(String empId);
 
-    @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.empId) LIKE LOWER(CONCAT('%', :name, '%'))")
-    List<User> findByNameAndIdContainingIgnoreCase(String name);
+    @Query("SELECT u FROM User u WHERE LOWER(u.empName) LIKE LOWER(CONCAT('%', :name, '%')) OR LOWER(u.empId) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<User> findByNameAndIdContainingIgnoreCase(@Param("name") String name);
 }
+
