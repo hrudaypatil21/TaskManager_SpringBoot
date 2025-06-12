@@ -306,6 +306,7 @@
     <label for="dueDate">Due Date</label>
     <input type="datetime-local" id="dueDate" name="dueDate" required>
 
+
     <input type="hidden" name="assignedById" th:value="${#authentication.name}" />
     <input type="hidden" name="assignedToId" th:value="${#authentication.name}" />
     <input type="hidden" name="status" value="TODO">

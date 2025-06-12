@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -39,6 +40,10 @@ public class TaskService {
             if (!assignedBy.getEmpId().equals(assignedTo.getEmpId())) {
                 throw new RuntimeException("Only admins can assign tasks to others");
             }
+        }
+
+        if(createTaskDTO.getDueDate().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Due date must be on or after the current time");
         }
 
         Task task = new Task();

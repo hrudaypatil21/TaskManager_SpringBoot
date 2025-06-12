@@ -2,19 +2,25 @@ package com.hruday.TaskManager.Controller;
 
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
+import com.hruday.TaskManager.Security.AuthHelper;
 import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 @RequestMapping("")
 public class ViewController {
+
+    @Autowired
+    private AuthHelper authHelper;
 
     @Autowired
     private TaskService taskService;
@@ -57,6 +63,16 @@ public class ViewController {
         List<Task> tasks = taskService.getTasksByUserId(empId);
         model.addAttribute("tasks", tasks);
         return "fragments/task-card-list";
+    }
+
+    @GetMapping("/fragments/user-sidebar")
+    public String showSidebar(Authentication authentication, Model model) {
+        if(authentication!=null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            model.addAttribute("empName" , user.getEmpName());
+            model.addAttribute("empId", user.getEmpId());
+        }
+        return "fragments/user-sidebar :: userSidebar";
     }
 
     @GetMapping("/fragments/task-form")
