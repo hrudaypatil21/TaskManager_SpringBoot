@@ -139,6 +139,115 @@
     color: #ffffff;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+        .form-container {
+        max-width: 400px;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .form-column {
+        flex: 1;
+        min-width: 280px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-column label,
+    .form-column input,
+    .form-column select {
+        width: 100%;
+    }
+
+    form {
+        height: auto;
+        width: 90%;
+        max-width: 500px;
+        padding: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            flex-direction: column;
+        }
+    }
+
+        .password-container {
+    position: relative;
+    width: 100%;
+        }
+
+        .password-container input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+        .password-container i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #aaa;
+}
+
+.role-select select {
+    width: 165px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.07);
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 300;
+    appearance: none; /* removes native arrow on some browsers */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+.role-select select option {
+    background-color: #080710;
+    color: #ffffff;
+}
+
+/* Success popup styles */
+.success-popup {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #4BB543;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.success-popup.show {
+    transform: translateX(0);
+}
+
+.success-popup i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.success-popup .close-btn {
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
     </style>
 </head>
 <body>
@@ -148,11 +257,11 @@
 </div>
 <form  hx-post="/api/auth/register"
        hx-swap="none"
-       autocomplete="off">
+       autocomplete="off"
+       id="registrationForm">
 
     <input type="text" name="fakeuser" autocomplete="username" style="display:none">
     <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
-
 
     <h3>Register New Employee</h3>
 
@@ -165,62 +274,87 @@
     <label for="name">Name</label>
     <input type="text" id="name" name="name" placeholder="Enter full name..." required>
 
-    <label for="role">Role:</label>
-    <select id="role" name="roles">
-        <option value="ROLE_ADMIN">Admin</option>
-        <option value="ROLE_USER" selected>Regular User</option>
-    </select>
-
+    <div class="role-select">
+        <label for="role">Role:</label>
+        <select id="role" name="roles">
+            <option value="ROLE_ADMIN">Admin</option>
+            <option value="ROLE_USER" selected>Regular User</option>
+        </select>
+    </div>
 
     <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="Password" required>
-    <!--    <span>-->
-    <!--                <label for="rememberMe" class="block mb-1">Remember Me</label>-->
-    <!--                <input type="checkbox" id="rememberMe" name="rememberMe"-->
-    <!--                       class="mr-2">-->
-    <!--                    </span>-->
-
-    <img src=
-                 "https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png"
-         width="1%"
-         height="1%"
-         style=
-                 "display: inline;
-                         margin-left: -1.5%;
-                         vertical-align: middle"
-         id="togglePassword">
+    <div class="password-container">
+        <input type="password" id="password" name="password" placeholder="Password" required>
+        <i class="fa fa-eye" id="togglePassword"></i>
+    </div>
 
     <button type="submit">Register</button>
-    <!--    <div class="social">-->
-    <!--        <div class="go"><i class="fab fa-google"></i>  Google</div>-->
-    <!--        <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>-->
-    <!--    </div>-->
 </form>
 
+<!-- Success Popup -->
+<div class="success-popup" id="successPopup">
+    <i class="fas fa-check-circle"></i>
+    <span>Registration successful!</span>
+    <span class="close-btn" id="closePopup">&times;</span>
+</div>
+
 <script>
-    const togglePassword =
-          document.querySelector('#togglePassword');
+    // Toggle password visibility
+    const icon = document.getElementById('togglePassword');
+    let password = document.getElementById('password');
 
-    const password =
-          document.querySelector('#id_password');
+    icon.addEventListener('click', function() {
+      if(password.type === "password") {
+        password.type = "text";
+        icon.classList.add("fa-eye-slash");
+        icon.classList.remove("fa-eye");
+      }
+      else {
+        password.type = "password";
+        icon.classList.add("fa-eye");
+        icon.classList.remove("fa-eye-slash");
+      }
+    });
 
-    togglePassword.
-    addEventListener('click', function (e) {
+    // Handle form submission and show success popup
+    document.getElementById('registrationForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        // Toggle the type attribute
-        const type = password.getAttribute(
-            'type') === 'password' ? 'text' : 'password';
-        password.setAttribute('type', type);
+        // Here you would normally handle the form submission
+        // For demo purposes, we'll just show the popup
 
-        // Toggle the eye slash icon
-        if (togglePassword.src.match(
-"https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png")) {
-            togglePassword.src =
-"https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png";
-        } else {
-            togglePassword.src =
-"https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png";
-        }
+        // Show success popup
+        const popup = document.getElementById('successPopup');
+        popup.classList.add('show');
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+            popup.classList.remove('show');
+        }, 5000);
+
+        // You would typically have your HTMX or fetch code here
+        // htmx.ajax('POST', '/api/auth/register', {
+        //     values: {
+        //         empId: document.getElementById('empId').value,
+        //         email: document.getElementById('email').value,
+        //         name: document.getElementById('name').value,
+        //         roles: document.getElementById('role').value,
+        //         password: document.getElementById('password').value
+        //     },
+        //     swap: 'none',
+        //     onSuccess: function() {
+        //         const popup = document.getElementById('successPopup');
+        //         popup.classList.add('show');
+        //         setTimeout(() => {
+        //             popup.classList.remove('show');
+        //         }, 5000);
+        //     }
+        // });
+    });
+
+    // Close popup manually
+    document.getElementById('closePopup').addEventListener('click', function() {
+        document.getElementById('successPopup').classList.remove('show');
     });
 </script>
 
