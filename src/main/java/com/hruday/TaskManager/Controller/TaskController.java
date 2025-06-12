@@ -8,6 +8,7 @@ import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,10 +38,17 @@ public class TaskController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #createTaskDTO.assignedToId == authentication.principal.username")
-    @PostMapping("/create")
-    public ResponseEntity<TaskResponseDTO> createTask(@Valid @RequestBody CreateTaskDTO createTaskDTO) {
-        TaskResponseDTO newTask = taskService.createTask(createTaskDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+    @PostMapping(value = "/create", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> createTask(@ModelAttribute CreateTaskDTO createTaskDTO) {
+        try {
+            TaskResponseDTO newTask = taskService.createTask(createTaskDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
+        }
     }
 
     @PreAuthorize("@taskSecurityService.canUpdateTask(authentication.principal.username, #taskId)")

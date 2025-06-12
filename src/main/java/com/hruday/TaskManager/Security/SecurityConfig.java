@@ -58,8 +58,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // Disable for now; enable in prod with token in form
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/register", "/login", "/css/**", "/html/**").permitAll()
-                        .requestMatchers("/admin-dashboard").hasRole("ADMIN")
-                        .requestMatchers("/dashboard").hasRole("USER")
+                        .requestMatchers("/admin-dashboard/**").hasRole("ADMIN")
+                        .requestMatchers("/dashboard/**").hasRole("USER")
                         .requestMatchers(HttpMethod.GET, "/api/tasks/user/{empId}").access(authorizeUserAccess())
                         .requestMatchers(HttpMethod.POST, "/api/tasks/create").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/tasks/update/{taskId}").access(authorizeTaskAccess())

@@ -41,11 +41,6 @@ public class TaskService {
             }
         }
 
-//        if (!assignedBy.getRoles().contains(User.Role.ROLE_ADMIN)
-//        && !assignedBy.getRoles().equals(assignedTo.getRoles())) {
-//            throw new RuntimeException("Only admin can assign task to others and users can assign tasks to themselves.");
-//        }
-
         Task task = new Task();
         task.setTitle(createTaskDTO.getTitle());
         task.setDescription(createTaskDTO.getDescription());

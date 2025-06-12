@@ -8,36 +8,52 @@
     <link rel="stylesheet" href="/css/login.css" />
     <script src="https://unpkg.com/htmx.org@2.0.1"></script>
 </head>
-<body>
+<body data-emp-id="${#authentication.name}">
 <div>
-    <form
-            th:action="@{/api/tasks/create}"
-            method="post"
-            hx-post="/api/tasks/create"
-            hx-target="#taskContainer"
-            hx-swap="beforebegin"
-            hx-on="htmx:afterRequest: this.remove();">
+    <h1>Task Management System</h1>
+    <div>
+        <h2>Admin Dashboard</h2>
+<!--        <a href="/admin-dashboard/task/new">-->
+<!--            Create Task-->
+<!--        </a>-->
+        <form>
+            <button formaction="/admin-dashboard/task/new">Create Task</button>
+        </form>
 
-        <input type="text" name="title" required class="w-full p-2 border rounded" placeholder="Enter title" >
-        <textarea name="description" placeholder="Enter description"></textarea>
-        <input type="datetime-local" name="dueDate" class="w-full p-2 border rounded" required>
+        <div class="task-list">
+            <div id="taskContainer"></div>
+        </div>
+    </div>
+</div>
 
-        <input type="text"
-               name="userSearch"
-               hx-post="/api/users/search"
-               hx-target="#userSearchResults"
-               hx-swap="innerHTML"
-               autocomplete="off"
-               class="w-full p-2 border rounded"
-               placeholder="Search user">
-        <div id="userSearchResults"></div>
-        <div id="selectedUser" class="mt-2"></div>
+<!--    <form-->
+<!--            th:action="@{/api/tasks/create}"-->
+<!--            method="post"-->
+<!--            hx-post="/api/tasks/create"-->
+<!--            hx-target="#taskContainer"-->
+<!--            hx-swap="beforebegin"-->
+<!--            hx-on="htmx:afterRequest: this.remove();">-->
 
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
-            Create
-        </button>
+<!--        <input type="text" name="title" required class="w-full p-2 border rounded" placeholder="Enter title" >-->
+<!--        <textarea name="description" placeholder="Enter description"></textarea>-->
+<!--        <input type="datetime-local" name="dueDate" class="w-full p-2 border rounded" required>-->
 
-    </form>
+<!--        <input type="text"-->
+<!--               name="userSearch"-->
+<!--               hx-post="/api/users/search"-->
+<!--               hx-target="#userSearchResults"-->
+<!--               hx-swap="innerHTML"-->
+<!--               autocomplete="off"-->
+<!--               class="w-full p-2 border rounded"-->
+<!--               placeholder="Search user">-->
+<!--        <div id="userSearchResults"></div>-->
+<!--        <div id="selectedUser" class="mt-2"></div>-->
+
+<!--        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">-->
+<!--            Create-->
+<!--        </button>-->
+
+<!--    </form>-->
 </div>
 </body>
 </html>

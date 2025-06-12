@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Task Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+  <!--Stylesheet-->
+  <style media="screen">
+    *,
+*:before,
+*:after{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+body{
+  background-color: #080710;
+}
+.background{
+  width: 430px;
+  height: 520px;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  left: 50%;
+  top: 50%;
+}
+.background .shape{
+  height: 200px;
+  width: 200px;
+  position: absolute;
+  border-radius: 50%;
+}
+.shape:first-child{
+  background: linear-gradient(
+      #1845ad,
+      #23a2f6
+  );
+  left: -80px;
+  top: -80px;
+}
+.shape:last-child{
+  background: linear-gradient(
+      to right,
+      #ff512f,
+      #f09819
+  );
+  right: -30px;
+  bottom: -80px;
+}
+form{
+  height: 520px;
+  width: 400px;
+  background-color: rgba(255,255,255,0.13);
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(8,7,16,0.6);
+  padding: 50px 35px;
+}
+form *{
+  font-family: 'Poppins',sans-serif;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+  outline: none;
+  border: none;
+}
+form h3{
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 42px;
+  text-align: center;
+}
+
+label{
+  display: block;
+  margin-top: 30px;
+  font-size: 16px;
+  font-weight: 500;
+}
+input{
+  display: block;
+  height: 50px;
+  width: 100%;
+  background-color: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  padding: 0 10px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 300;
+}
+::placeholder{
+  color: #e5e5e5;
+}
+button{
+  margin-top: 50px;
+  width: 100%;
+  background-color: #ffffff;
+  color: #080710;
+  padding: 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.social{
+margin-top: 30px;
+display: flex;
+}
+.social div{
+background: red;
+width: 150px;
+border-radius: 3px;
+padding: 5px 10px 10px 5px;
+background-color: rgba(255,255,255,0.27);
+color: #eaf0fb;
+text-align: center;
+}
+.social div:hover{
+background-color: rgba(255,255,255,0.47);
+}
+.social .fb{
+margin-left: 25px;
+}
+.social i{
+margin-right: 4px;
+}
+
+
+button:hover {
+background-color: #FFBF00;
+color: #ffffff;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+    .form-container {
+    max-width: 400px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.form-column {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-column label,
+.form-column input,
+.form-column select {
+    width: 100%;
+}
+
+form {
+    height: auto;
+    width: 90%;
+    max-width: 500px;
+    padding: 40px;
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column;
+    }
+}
+
+    .password-container {
+position: relative;
+width: 100%;
+    }
+
+    .password-container input {
+width: 100%;
+padding-right: 40px;
+}
+
+    .password-container i {
+position: absolute;
+top: 50%;
+right: 10px;
+transform: translateY(-50%);
+cursor: pointer;
+color: #aaa;
+}
+
+.role-select select {
+width: 165px;
+height: 50px;
+background-color: rgba(255, 255, 255, 0.07);
+color: #ffffff;
+border: none;
+border-radius: 3px;
+padding: 0 10px;
+font-size: 14px;
+font-weight: 300;
+appearance: none; /* removes native arrow on some browsers */
+-webkit-appearance: none;
+-moz-appearance: none;
+background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg width='10' height='7' viewBox='0 0 10 7' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 10px center;
+background-size: 12px;
+}
+
+.role-select select option {
+background-color: #080710;
+color: #ffffff;
+}
+
+/* Success popup styles */
+.success-popup {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: #4BB543;
+color: white;
+padding: 15px 25px;
+border-radius: 5px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+display: flex;
+align-items: center;
+transform: translateX(150%);
+transition: transform 0.3s ease-in-out;
+}
+
+.success-popup.show {
+transform: translateX(0);
+}
+
+.success-popup i {
+margin-right: 10px;
+font-size: 1.2rem;
+}
+
+.success-popup .close-btn {
+margin-left: 20px;
+cursor: pointer;
+font-weight: bold;
+}
+
+/* Error popup styles */
+.error-popup {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: #F95062;
+color: white;
+padding: 15px 25px;
+border-radius: 5px;
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+display: flex;
+align-items: center;
+transform: translateX(150%);
+transition: transform 0.3s ease-in-out;
+}
+
+.error-popup.show {
+transform: translateX(0);
+}
+
+.error-popup i {
+margin-right: 10px;
+font-size: 1.2rem;
+}
+
+.error-popup .close-btn {
+margin-left: 20px;
+cursor: pointer;
+font-weight: bold;
+}
+  </style>
+</head>
+<body>
+<div class="background">
+  <div class="shape"></div>
+  <div class="shape"></div>
+</div>
+<form  hx-post="/api/tasks/create"
+       hx-swap="none"
+       autocomplete="off"
+       id="taskForm">
+
+  <input type="text" name="fakeuser" autocomplete="username" style="display:none">
+  <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
+
+  <h3>Create a Task</h3>
+
+  <label for="title">Title</label>
+  <input type="text" id="title" name="title" placeholder="Enter title..." required>
+
+  <label for="description">Description</label>
+  <input type="text" id="description" name="description" placeholder="Enter description..." >
+
+  <label for="dueDate">Due Date</label>
+  <input type="datetime-local" id="dueDate" name="dueDate" required>
+
+  <input type="hidden" name="assignedById" th:value="${#authentication.name}" />
+
+  <label for="assignedToId">Search assignee</label>
+  <input type="search" id="assignedToId"  name="assignedToId" />
+
+  <input type="hidden" name="status" value="TODO">
+
+  <button type="submit">Create</button>
+</form>
+
+<!-- Success Popup -->
+<div class="success-popup" id="successPopup">
+  <i class="fas fa-check-circle"></i>
+  <span>Task created successfully!</span>
+  <span class="close-btn" id="closeSuccessPopup">&times;</span>
+</div>
+
+<!-- Error Popup -->
+<div class="error-popup" id="errorPopup">
+  <i class="fas fa-exclamation-circle"></i>
+  <span id="errorMessage">Failed to create task</span>
+  <span class="close-btn" id="closeErrorPopup">&times;</span>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Handle form submission with HTMX
+      document.getElementById('taskForm').addEventListener('htmx:afterRequest', function(evt) {
+          const popup = document.getElementById('successPopup');
+          const errorPopup = document.getElementById('errorPopup');
+
+          if (evt.detail.successful) {
+              // Show success popup
+              popup.classList.add('show');
+
+              // Clear form on success
+              if (evt.detail.xhr.status === 200) {
+                  document.getElementById('taskForm').reset();
+              }
+
+              // Hide after 5 seconds
+              setTimeout(() => {
+                  popup.classList.remove('show');
+              }, 5000);
+          } else {
+              // Show error popup
+              let errorMsg = 'Failed to create task';
+              try {
+                  const response = JSON.parse(evt.detail.xhr.responseText);
+                  errorMsg = response.message || errorMsg;
+              } catch (e) {
+                  console.error('Error parsing response', e);
+              }
+              document.getElementById('errorMessage').textContent = errorMsg;
+              errorPopup.classList.add('show');
+
+              // Hide after 5 seconds
+              setTimeout(() => {
+                  errorPopup.classList.remove('show');
+              }, 5000);
+          }
+      });
+
+      // Close buttons
+      document.getElementById('closeSuccessPopup').addEventListener('click', function() {
+          document.getElementById('successPopup').classList.remove('show');
+      });
+
+      document.getElementById('closeErrorPopup').addEventListener('click', function() {
+          document.getElementById('errorPopup').classList.remove('show');
+      });
+  });
+</script>
+
+</body>
+</html>

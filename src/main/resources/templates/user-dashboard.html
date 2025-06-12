@@ -7,26 +7,133 @@
     <title>Task Management System</title>
     <link rel="stylesheet" href="/css/login.css" />
     <script src="https://unpkg.com/htmx.org@2.0.1"></script>
+    <style>
+        #taskFormWrapper {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            background: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            transition: all 250ms ease-in;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+    </style>
 </head>
-<body>
+<body data-emp-id="${#authentication.name}">
 <div>
     <h1>Task Management System</h1>
     <div>
         <h2>User Dashboard</h2>
-        <button
-        hx-get="/api/tasks/create"
-        hx-target="#taskFormContainer"
-        hx-swap="beforebegin"
-        class="bg-blue-500 text-white px-4 py-2 rounded">
-            Create Task
-        </button>
+<!--        <a href="/dashboard/task/new">-->
+<!--            Create Task-->
+<!--        </a>-->
 
-        <div id="taskFormContainer"></div>
+        <form>
+            <button formaction="/dashboard/task/new">Create Task</button>
+        </form>
 
         <div class="task-list">
             <div id="taskContainer"></div>
         </div>
     </div>
 </div>
+
+<script>
+
+</script>
 </body>
 </html>
+
+<!--<!doctype html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <meta name="color-scheme" content="light dark" />-->
+<!--    <title>Task Management System</title>-->
+<!--    <link rel="stylesheet" href="/css/login.css" />-->
+<!--    <script src="https://unpkg.com/htmx.org@2.0.1"></script>-->
+<!--    <style>-->
+<!--        #taskFormWrapper {-->
+<!--            position: fixed;-->
+<!--            top: 10%;-->
+<!--            left: 50%;-->
+<!--            transform: translateX(-50%);-->
+<!--            z-index: 1000;-->
+<!--            background: white;-->
+<!--            border: 1px solid #ccc;-->
+<!--            padding: 20px;-->
+<!--            box-shadow: 0 4px 12px rgba(0,0,0,0.15);-->
+<!--            border-radius: 8px;-->
+<!--            transition: all 250ms ease-in;-->
+<!--            width: 90%;-->
+<!--            max-width: 600px;-->
+<!--        }-->
+
+<!--        .overlay {-->
+<!--            position: fixed;-->
+<!--            top: 0;-->
+<!--            left: 0;-->
+<!--            right: 0;-->
+<!--            bottom: 0;-->
+<!--            background-color: rgba(0,0,0,0.5);-->
+<!--            z-index: 999;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div>-->
+<!--    <h1>Task Management System</h1>-->
+<!--    <div>-->
+<!--        <h2>User Dashboard</h2>-->
+<!--        <button hx-get="/fragments/task-form"-->
+<!--                hx-target="body"-->
+<!--                hx-swap="beforeend"-->
+<!--                class="bg-blue-500 text-white px-4 py-2 rounded">-->
+<!--            Create Task-->
+<!--        </button>-->
+
+<!--        <div class="task-list">-->
+<!--            <div id="taskContainer"></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    // Close form when clicking on overlay-->
+<!--    document.addEventListener('click', function(event) {-->
+<!--        if (event.target.classList.contains('overlay')) {-->
+<!--            const formWrapper = document.getElementById('taskFormWrapper');-->
+<!--            if (formWrapper) formWrapper.remove();-->
+<!--            event.target.remove();-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Close form with Escape key-->
+<!--    document.addEventListener('keydown', function(event) {-->
+<!--        if (event.key === 'Escape') {-->
+<!--            const formWrapper = document.getElementById('taskFormWrapper');-->
+<!--            const overlay = document.querySelector('.overlay');-->
+<!--            if (formWrapper) formWrapper.remove();-->
+<!--            if (overlay) overlay.remove();-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
