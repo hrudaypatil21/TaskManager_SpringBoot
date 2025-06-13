@@ -43,14 +43,14 @@ public class ViewController {
         return "admin-dashboard";
     }
 
-    @GetMapping("/dashboard")
-    public String showUserDashboard() {
-        return "user-dashboard";
-    }
-
     @GetMapping("/dashboard/task/new")
-    public String showTaskForm() {
-        return "task-form";
+    public String showTaskForm(Authentication authentication, Model model) {
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            model.addAttribute("empName", user.getEmpName());
+            model.addAttribute("empId", user.getEmpId());
+        }
+        return "fragments/task-form :: userTaskForm";
     }
 
     @GetMapping("/admin-dashboard/task/new")
@@ -75,7 +75,7 @@ public class ViewController {
         return "fragments/user-sidebar :: userSidebar";
     }
 
-    @GetMapping("/user-dashboard")
+    @GetMapping("/dashboard")
     public String showUserDashboard(Authentication authentication, Model model) {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
@@ -85,14 +85,22 @@ public class ViewController {
         return "user-dashboard"; // Return the full template, not just a fragment
     }
 
-    @GetMapping("/fragments/task-form")
-    public String getTaskFormFragment(Authentication authentication, Model model) {
-        // Add any necessary model attributes
-        model.addAttribute("isAdmin", authentication != null &&
-                authentication.getAuthorities().stream()
-                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
-        return "fragments/task-form :: taskForm";
-    }
+//    @GetMapping("/fragments/task-form")
+//    public String showTaskForm() {
+//
+//        return "fragments/user-sidebar :: userSidebar";
+//    }
+
+
+
+//    @GetMapping("/fragments/task-form")
+//    public String getTaskFormFragment(Authentication authentication, Model model) {
+//        // Add any necessary model attributes
+//        model.addAttribute("isAdmin", authentication != null &&
+//                authentication.getAuthorities().stream()
+//                        .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
+//        return "fragments/task-form :: taskForm";
+//    }
 
     @GetMapping("/searchuser")
     public String searchUsers(@RequestParam("query") String query, Model model) {

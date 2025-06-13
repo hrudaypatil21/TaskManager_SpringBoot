@@ -11,17 +11,147 @@
     <script src="https://unpkg.com/htmx.org@2.0.1"></script>
     <style>
         .dropdownUser2 {
-        margin-right: 30px;
+            margin-right: 80px;
         }
+        /* Scoped styles for the task form */
+        #taskContentContainer .background {
+            /* Your task form specific styles */
+        }
+
+        /* Add a specific class to scope these styles */
+.task-form-container {
+    background-color: #080710;
+}
+
+.task-form-container .background {
+    width: 430px;
+    height: 520px;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    left: 50%;
+    top: 50%;
+    z-index: -1; /* Put behind the form */
+}
+
+.task-form-container .background .shape {
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.task-form-container .shape:first-child {
+    background: linear-gradient(#1845ad, #23a2f6);
+    left: -80px;
+    top: -80px;
+}
+
+.task-form-container .shape:last-child {
+    background: linear-gradient(to right, #ff512f, #f09819);
+    right: -30px;
+    bottom: -80px;
+}
+
+.task-form-container form {
+    height: auto;
+    width: 90%;
+    max-width: 400px;
+    background-color: rgba(255,255,255,0.13);
+    position: relative;
+    margin: 2rem auto;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 30px 25px;
+}
+
+.task-form-container form * {
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+/* Rest of your form styles prefixed with .task-form-container */
+.task-form-container form h3 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+.task-form-container label {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.task-form-container input {
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.task-form-container ::placeholder {
+    color: #e5e5e5;
+}
+
+.task-form-container button {
+    margin-top: 30px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.task-form-container button:hover {
+    background-color: #FFBF00;
+    color: #ffffff;
+}
+
+/* Popup styles can remain global since they're fixed position */
+.success-popup, .error-popup {
+    /* Your existing popup styles */
+}
     </style>
 </head>
 <body data-emp-id="${#authentication.name}">
 
-<!-- Button to toggle sidebar -->
 <nav class="navbar navbar-light bg-light">
     <div class="container-fluid">
         <button class="btn btn-outline-primary" id="toggleSidebarBtn">☰ Menu</button>
         <span class="navbar-brand mb-0 h1">User Dashboard</span>
+        <span>
+            <div class="dropdown">
+          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+            <strong th:text="${empName + ' ' + empId}">Username Employee ID</strong>
+          </a>
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form method="post" action="/logout">
+                <button class="dropdown-item">Sign out</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        </span>
     </div>
 </nav>
 
@@ -29,20 +159,69 @@
 <div class="d-flex" id="dashboardLayout" style="min-height: 100vh;">
 
     <!-- Sidebar (loaded by HTMX) -->
-    <div id="userSidebar" hx-get="/fragments/user-sidebar" hx-trigger="load" hx-swap="outerHTML"></div>
+    <div id="userSidebar"
+         hx-get="/fragments/user-sidebar"
+         hx-trigger="load"
+         hx-preserve="true"
+         hx-swap="outerHTML"></div>
 
     <!-- Main content -->
-    <div class="flex-grow-1 p-4">
-        <h2>Welcome to your dashboard!</h2>
-        <p>Main content goes here...</p>
+    <div id="taskContentContainer" class="flex-grow-1 p-4">
     </div>
+
+<!--    <div id="userTaskForm" hx-get="/fragments/task-form" hx-trigger="click" class="flex-grow-1 p-4">-->
+<!--    </div>-->
 
 </div>
 
 <script>
-    document.getElementById('toggleSidebarBtn').addEventListener('click', function () {
-      const sidebar = document.getElementById('userSidebar');
-      sidebar.classList.toggle('d-none');
+<!--    document.getElementById('toggleSidebarBtn').addEventListener('click', function () {-->
+<!--      const sidebar = document.getElementById('userSidebar');-->
+<!--      sidebar.classList.toggle('d-none');-->
+<!--    });-->
+
+        document.addEventListener('click', function(event) {
+        if (event.target.id === 'toggleSidebarBtn') {
+            const sidebar = document.getElementById('userSidebar');
+            sidebar.classList.toggle('d-none');
+        }
+    });
+
+        // HTMX after swap handler to prevent style conflicts
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        if (evt.detail.target.id === 'taskContentContainer') {
+            // Add a specific class to the loaded content
+            const content = document.getElementById('taskContentContainer');
+            content.classList.add('task-form-content');
+        }
+    });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Prevent default behavior for HTMX links
+    document.body.addEventListener('click', function(event) {
+        if (event.target.hasAttribute('hx-get')) {
+            event.preventDefault();
+        }
+    });
+
+    // Sidebar toggle functionality
+    document.getElementById('toggleSidebarBtn').addEventListener('click', function() {
+        const sidebar = document.getElementById('userSidebar');
+        sidebar.classList.toggle('d-none');
+    });
+
+    // Initialize HTMX
+    htmx.process(document.body);
+});
+
+    document.addEventListener('htmx:beforeRequest', function(evt) {
+        console.log('HTMX requesting:', evt.detail.pathInfo.requestPath);
+    });
+    document.addEventListener('htmx:afterRequest', function(evt) {
+        console.log('HTMX response:', evt.detail.xhr.status);
+    });
+    document.addEventListener('htmx:responseError', function(evt) {
+        console.error('HTMX error:', evt.detail);
     });
 </script>
 </body>

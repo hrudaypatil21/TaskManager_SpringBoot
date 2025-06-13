@@ -1,144 +1,46 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<body>-->
-<!--<div id="taskFormWrapper" th:fragment="taskForm">-->
-<!--    <div class="overlay"></div>-->
-<!--    <form hx-post="/api/tasks/create"-->
-<!--          hx-target="#taskContainer"-->
-<!--          hx-swap="beforebegin"-->
-<!--          hx-on::after-request="this.closest('#taskFormWrapper').remove()">-->
-
-<!--        &lt;!&ndash; Task Title &ndash;&gt;-->
-<!--        <div class="mb-4">-->
-<!--            <label for="title" class="block text-sm font-medium text-gray-700">Title</label>-->
-<!--            <input type="text"-->
-<!--                   id="title"-->
-<!--                   name="title"-->
-<!--                   required-->
-<!--                   class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"-->
-<!--                   placeholder="Enter task title">-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Task Description &ndash;&gt;-->
-<!--        <div class="mb-4">-->
-<!--            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>-->
-<!--            <textarea id="description"-->
-<!--                      name="description"-->
-<!--                      rows="3"-->
-<!--                      class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"-->
-<!--                      placeholder="Enter task description"></textarea>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Due Date &ndash;&gt;-->
-<!--        <div class="mb-4">-->
-<!--            <label for="dueDate" class="block text-sm font-medium text-gray-700">Due Date</label>-->
-<!--            <input type="datetime-local"-->
-<!--                   id="dueDate"-->
-<!--                   name="dueDate"-->
-<!--                   required-->
-<!--                   class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Hidden field for non-admin users &ndash;&gt;-->
-<!--        <input type="hidden"-->
-<!--               th:unless="${isAdmin}"-->
-<!--               name="assignedToId"-->
-<!--               th:value="${#authentication.principal.username}">-->
-
-<!--        &lt;!&ndash; User Search (only for admins) &ndash;&gt;-->
-<!--        <div class="mb-4" th:if="${isAdmin}">-->
-<!--            <label class="block text-sm font-medium text-gray-700">Assign To</label>-->
-<!--            <input type="text"-->
-<!--                   name="userSearch"-->
-<!--                   hx-post="/api/users/search"-->
-<!--                   hx-target="#userSearchResults"-->
-<!--                   hx-swap="innerHTML"-->
-<!--                   hx-trigger="keyup changed delay:500ms"-->
-<!--                   autocomplete="off"-->
-<!--                   class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"-->
-<!--                   placeholder="Search user by name or ID">-->
-
-<!--            &lt;!&ndash; Search Results &ndash;&gt;-->
-<!--            <div id="userSearchResults" class="mt-1 border border-gray-200 rounded-md max-h-60 overflow-auto"></div>-->
-
-<!--            &lt;!&ndash; Selected User Display &ndash;&gt;-->
-<!--            <div id="selectedUser" class="mt-2 hidden">-->
-<!--                <div class="flex items-center justify-between p-2 bg-gray-100 rounded-md">-->
-<!--                    <span class="text-sm font-medium" id="selectedUserName"></span>-->
-<!--                    <input type="hidden" name="assignedToId" id="assignedToIdInput">-->
-<!--                    <button type="button" onclick="clearSelection()" class="text-red-500 hover:text-red-700">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
-<!--                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />-->
-<!--                        </svg>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Submit Button &ndash;&gt;-->
-<!--        <div class="flex justify-end">-->
-<!--            <button type="button"-->
-<!--                    onclick="document.getElementById('taskFormWrapper').remove()"-->
-<!--                    class="mr-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">-->
-<!--                Cancel-->
-<!--            </button>-->
-<!--            <button type="submit"-->
-<!--                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">-->
-<!--                Create Task-->
-<!--            </button>-->
-<!--        </div>-->
-<!--    </form>-->
-
-<!--    <script>-->
-<!--        function selectUser(userId, userName) {-->
-<!--            document.getElementById('selectedUserName').textContent = userName;-->
-<!--            document.getElementById('assignedToIdInput').value = userId;-->
-<!--            document.getElementById('selectedUser').classList.remove('hidden');-->
-<!--            document.getElementById('userSearchResults').innerHTML = '';-->
-<!--        }-->
-
-<!--        function clearSelection() {-->
-<!--            document.getElementById('selectedUserName').textContent = '';-->
-<!--            document.getElementById('assignedToIdInput').value = '';-->
-<!--            document.getElementById('selectedUser').classList.add('hidden');-->
-<!--        }-->
-<!--    </script>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
-
-<div id="taskFormWrapper" th:fragment="taskForm">
-    <div class="modal fade" id="staticBackdrop2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-        <div class="modal-dialog d-flex justify-content-center">
-            <div class="modal-content w-75">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Sign up</h5>
-                    <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <form>
-                        <!-- Name input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="text" id="name2" class="form-control" />
-                            <label class="form-label" for="name2">Name</label>
-                        </div>
-
-                        <!-- Email input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="email" id="email2" class="form-control" />
-                            <label class="form-label" for="email2">Email address</label>
-                        </div>
-
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="password" id="password2" class="form-control" />
-                            <label class="form-label" for="password2">Password</label>
-                        </div>
-
-                        <!-- Submit button -->
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block">Sign up</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+<div th:fragment="userTaskForm" class="task-form-container">
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
     </div>
+<form  hx-post="/api/tasks/create"
+       hx-swap="none"
+       autocomplete="off"
+       id="taskForm">
+
+    <input type="text" name="fakeuser" autocomplete="username" style="display:none">
+    <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
+
+    <h3 class="card-title">Create a Task</h3>
+
+    <label for="title" class="form-label">Title</label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title..." required>
+
+    <label for="description" class="form-label">Description</label>
+    <input type="text" class="form-control" id="description" name="description" placeholder="Enter description..." >
+
+    <label for="dueDate" class="form-label">Due Date</label>
+    <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" required>
+
+
+    <input type="hidden" name="assignedById" th:value="${#authentication.name}" />
+    <input type="hidden" name="assignedToId" th:value="${#authentication.name}" />
+    <input type="hidden" name="status" value="TODO">
+
+    <button type="submit">Create</button>
+</form>
+
+<!-- Success Popup -->
+<div class="success-popup" id="successPopup">
+    <i class="fas fa-check-circle"></i>
+    <span>Task created successfully!</span>
+    <span class="close-btn" id="closeSuccessPopup">&times;</span>
+</div>
+
+<!-- Error Popup -->
+<div class="error-popup" id="errorPopup">
+    <i class="fas fa-exclamation-circle"></i>
+    <span id="errorMessage">Failed to create task</span>
+    <span class="close-btn" id="closeErrorPopup">&times;</span>
+</div>
 </div>

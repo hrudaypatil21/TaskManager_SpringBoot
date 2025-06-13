@@ -16,7 +16,12 @@
       </a>
     </li>
     <li>
-      <a href="/dashboard/task/new" class="nav-link sidebar-link">
+      <a href="javascript:void(0)"
+         class="nav-link sidebar-link"
+         hx-get="/dashboard/task/new"
+         hx-target="#taskContentContainer"
+         hx-swap="innerHTML"
+         hx-trigger="click">
         <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
         Create
       </a>
@@ -24,7 +29,7 @@
     <l1>
       <div class="d-flex flex-column align-items-center justify-content-center mt-auto">
         <hr class="w-100 mb-2"> <!-- Horizontal bar just above the section -->
-        <div class="dropdown dropdown">
+        <div class="dropdown">
           <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
             <strong th:text="${empName + ' ' + empId}">Username Employee ID</strong>
           </a>
@@ -43,5 +48,13 @@
     </l1>
   </ul>
 
-
 </div>
+<script>
+  document.getElementById('createTaskBtn').addEventListener('click', function() {
+      fetch('/dashboard/task/new')
+          .then(response => response.text())
+          .then(html => {
+              document.getElementById('taskContentContainer').innerHTML = html;
+          });
+  });
+</script>
