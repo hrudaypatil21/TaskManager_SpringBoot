@@ -1,61 +1,86 @@
 <div th:fragment="userSidebar"
      id="userSidebar"
-     class="d-flex flex-column flex-shrink-0 p-3 bg-light"
-     style="width: 280px; min-height: 100vh;">
-  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+     class="d-flex flex-column flex-shrink-0 p-3"
+     style="width: 280px; min-height: 100vh; background-color: #2d3748;">
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <svg class="bi me-2" width="40" height="32" fill="currentColor"><use xlink:href="#bootstrap"></use></svg>
     <span class="fs-4">TaskManager</span>
   </a>
-  <hr>
+  <hr class="border-gray-600">
 
   <ul class="nav nav-pills flex-column mb-5">
     <li class="nav-item">
-      <a href="#" class="nav-link  sidebar-link" aria-current="page">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+      <a href="#" class="nav-link text-gray-300 hover:bg-gray-700" aria-current="page">
+        <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#home"></use></svg>
         Tasks
       </a>
     </li>
     <li>
       <a href="javascript:void(0)"
-         class="nav-link sidebar-link"
+         class="nav-link text-gray-300 hover:bg-gray-700"
          th:attr="hx-get=${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin-dashboard/task/new' : '/dashboard/task/new'}"
          hx-target="#taskContentContainer"
          hx-swap="innerHTML"
          hx-trigger="click">
-        <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+        <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#speedometer2"></use></svg>
         Create
       </a>
-
     </li>
-    <l1>
+    <li>
       <div class="d-flex flex-column align-items-center justify-content-center mt-auto">
-        <hr class="w-100 mb-2"> <!-- Horizontal bar just above the section -->
+        <hr class="w-100 mb-2 border-gray-600">
         <div class="dropdown">
-          <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+          <a href="#" class="d-flex align-items-center text-gray-300 text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
             <strong th:text="${empName + ' ' + empId}">Username Employee ID</strong>
           </a>
-          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-            <li><a class="dropdown-item" href="#">Settings</a></li>
-            <li><a class="dropdown-item" href="#">Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser2" style="background-color: #4a5568;">
+            <li><a class="dropdown-item text-gray-300 hover:bg-gray-600" href="#">Settings</a></li>
+            <li><a class="dropdown-item text-gray-300 hover:bg-gray-600" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider border-gray-600"></li>
             <li>
               <form method="post" action="/logout">
-                <button class="dropdown-item">Sign out</button>
+                <button class="dropdown-item text-gray-300 hover:bg-gray-600">Sign out</button>
               </form>
             </li>
           </ul>
         </div>
       </div>
-    </l1>
+    </li>
   </ul>
-
 </div>
-<script>
-  document.getElementById('createTaskBtn').addEventListener('click', function() {
-      fetch('/dashboard/task/new')
-          .then(response => response.text())
-          .then(html => {
-              document.getElementById('taskContentContainer').innerHTML = html;
-          });
-  });
-</script>
+
+<style>
+  /* Custom dark gray theme enhancements */
+  #userSidebar {
+    background-color: #2d3748;
+    color: #e2e8f0;
+  }
+
+  #userSidebar .nav-link {
+    color: #e2e8f0;
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+  }
+
+  #userSidebar .nav-link:hover {
+    background-color: #4a5568;
+    color: #ffffff;
+  }
+
+  #userSidebar .nav-link.active {
+    background-color: #4a5568;
+    color: #ffffff;
+  }
+
+  #userSidebar .dropdown-menu {
+    border: 1px solid #4a5568;
+  }
+
+  #userSidebar .dropdown-item:hover {
+    background-color: #4a5568;
+  }
+
+  #userSidebar svg {
+    color: inherit;
+  }
+</style>
