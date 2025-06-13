@@ -75,6 +75,16 @@ public class ViewController {
         return "fragments/user-sidebar :: userSidebar";
     }
 
+    @GetMapping("/user-dashboard")
+    public String showUserDashboard(Authentication authentication, Model model) {
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            model.addAttribute("empName", user.getEmpName());
+            model.addAttribute("empId", user.getEmpId());
+        }
+        return "user-dashboard"; // Return the full template, not just a fragment
+    }
+
     @GetMapping("/fragments/task-form")
     public String getTaskFormFragment(Authentication authentication, Model model) {
         // Add any necessary model attributes
