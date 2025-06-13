@@ -126,4 +126,22 @@ public class TaskService {
 
         return tasks;
     }
+
+    @Transactional
+    public int getTaskCountByStatus(Authentication authentication, String statusStr) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return 0;
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        Task.Status status;
+        try {
+            status = Task.Status.valueOf(statusStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid task status: " + statusStr);
+        }
+
+        return taskRepository.countByAssignedToAndStatus(user, status);
+    }
 }

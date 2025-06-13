@@ -1,0 +1,27 @@
+<div th:fragment="taskCount"  class="task-status-container" style="display: flex; gap: 1rem; justify-content: space-around;">
+
+  <!-- To Do Card -->
+  <div class="task-card">
+    <h2>To Do</h2>
+    <div id="todoCount" hx-get="/task/status-count?status=TODO" hx-trigger="load" hx-target="#todoCount" hx-swap="innerHTML">
+      Loading...
+    </div>
+  </div>
+
+  <!-- In Progress Card -->
+  <div class="task-card">
+    <h2>In Progress</h2>
+    <div id="inProgressCount" hx-get="/task/status-count?status=IN_PROGRESS" hx-trigger="load" hx-target="#inProgressCount" hx-swap="innerHTML">
+      Loading...
+    </div>
+  </div>
+
+  <!-- Done Card -->
+  <div class="task-card">
+    <h2>Done</h2>
+    <div id="doneCount" hx-get="/task/status-count?status=DONE" hx-trigger="load" hx-target="#doneCount" hx-swap="innerHTML">
+      Loading...
+    </div>
+  </div>
+
+</div>

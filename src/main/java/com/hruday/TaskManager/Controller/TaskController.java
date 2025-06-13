@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -66,4 +67,11 @@ public class TaskController {
         taskService.deleteTask(taskId);
         return ResponseEntity.noContent().build();
     }
+
+    @PreAuthorize("#createTaskDTO.assignedToId == authentication.principal.username")
+    @GetMapping("/count/status/{statusStr}")
+    public ResponseEntity<Integer> getTaskCountByStatus(@PathVariable String statusStr, Authentication authentication) {
+        authentication.getPrincipal();
+        int count = taskService.getTaskCountByStatus(authentication, statusStr);
+        return ResponseEntity.ok(count);}
 }

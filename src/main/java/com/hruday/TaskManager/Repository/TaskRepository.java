@@ -1,6 +1,7 @@
 package com.hruday.TaskManager.Repository;
 
 import com.hruday.TaskManager.Entity.Task;
+import com.hruday.TaskManager.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,5 +26,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByAssignedToEmpId(String empId);
     List<Task> findByAssignedByEmpId(String empId);
 
-
+    int countByAssignedToAndStatus(User user, Task.Status status);
 }
