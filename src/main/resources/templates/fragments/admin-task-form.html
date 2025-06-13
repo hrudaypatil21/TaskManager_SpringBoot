@@ -1,0 +1,79 @@
+<div th:fragment="adminTaskForm" class="task-form-container">
+  <form hx-post="/api/tasks/create" hx-swap="none" autocomplete="off" class="task-form" id="taskForm">
+    <input type="text" name="fakeuser" autocomplete="username" style="display:none">
+    <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
+
+    <h3>Create a Task [Admin]</h3>
+
+    <div class="task-form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter title..." required>
+    </div>
+
+    <div class="task-form-group">
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description" placeholder="Enter description...">
+    </div>
+
+    <div class="task-form-group">
+      <label for="dueDate">Due Date</label>
+      <input type="datetime-local" id="dueDate" name="dueDate" required>
+    </div>
+
+    <input type="hidden" name="assignedById" th:value="${#authentication.name}">
+    <input type="hidden" name="assignedToId" th:value="${#authentication.name}">
+    <input type="hidden" name="status" value="TODO">
+
+    <div class="submit-button">
+      <button type="submit" hx-indicator="#spinner">
+        <span>Confirm</span>
+      </button>
+    </div>
+  </form>
+
+  <!-- Success Popup -->
+  <div class="task-success-popup" id="successPopup">
+    <i class="fas fa-check-circle"></i>
+    <span>Task created successfully!</span>
+    <span class="task-close-btn" id="closeSuccessPopup">&times;</span>
+  </div>
+
+  <!-- Error Popup -->
+  <div class="task-error-popup" id="errorPopup">
+    <i class="fas fa-exclamation-circle"></i>
+    <span id="task-error-message">Failed to create task</span>
+    <span class="task-close-btn" id="closeErrorPopup">&times;</span>
+  </div>
+</div>
+
+<script>
+  // Initialize popup functionality
+  document.addEventListener('DOMContentLoaded', function() {
+      // Close buttons for popups
+      document.getElementById('closeSuccessPopup')?.addEventListener('click', function() {
+          document.getElementById('successPopup').classList.remove('show');
+      });
+
+      document.getElementById('closeErrorPopup')?.addEventListener('click', function() {
+          document.getElementById('errorPopup').classList.remove('show');
+      });
+
+      // HTMX response handling
+      document.body.addEventListener('htmx:afterRequest', function(evt) {
+          if (evt.detail.elt.id === 'taskForm') {
+              const popup = evt.detail.success ?
+                  document.getElementById('successPopup') :
+                  document.getElementById('errorPopup');
+
+              if (popup) {
+                  popup.classList.add('show');
+                  setTimeout(() => popup.classList.remove('show'), 3000);
+              }
+
+              if (evt.detail.success) {
+                  document.getElementById('taskForm').reset();
+              }
+          }
+      });
+  });
+</script>

@@ -18,13 +18,14 @@
     <li>
       <a href="javascript:void(0)"
          class="nav-link sidebar-link"
-         hx-get="/dashboard/task/new"
+         th:attr="hx-get=${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin-dashboard/task/new' : '/dashboard/task/new'}"
          hx-target="#taskContentContainer"
          hx-swap="innerHTML"
          hx-trigger="click">
         <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
         Create
       </a>
+
     </li>
     <l1>
       <div class="d-flex flex-column align-items-center justify-content-center mt-auto">

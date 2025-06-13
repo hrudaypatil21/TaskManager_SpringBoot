@@ -39,7 +39,12 @@ public class ViewController {
     }
 
     @GetMapping("/admin-dashboard")
-    public String showAdminDashboard() {
+    public String showAdminDashboard(Authentication authentication, Model model) {
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            model.addAttribute("empName", user.getEmpName());
+            model.addAttribute("empId", user.getEmpId());
+        }
         return "admin-dashboard";
     }
 
@@ -54,8 +59,13 @@ public class ViewController {
     }
 
     @GetMapping("/admin-dashboard/task/new")
-    public String showAdminTaskForm() {
-        return "admin-task-form";
+    public String showAdminTaskForm(Authentication authentication, Model model) {
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            model.addAttribute("empName", user.getEmpName());
+            model.addAttribute("empId", user.getEmpId());
+        }
+        return "fragments/admin-task-form :: adminTaskForm";
     }
 
     @GetMapping("/fragments/user/{empId}")
