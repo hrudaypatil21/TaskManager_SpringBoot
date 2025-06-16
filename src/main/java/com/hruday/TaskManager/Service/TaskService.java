@@ -110,12 +110,8 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    public List<Task> getTasksByUserId(String empId) {
-        List<Task> tasks = taskRepository.findByAssignedToEmpId(empId);
-        if (tasks.isEmpty()) {
-            throw new RuntimeException("No tasks found for user with ID " + empId);
-        }
-        return tasks;
+    public List<Task> getTasksByUserId(User user) {
+        return taskRepository.findByAssignedToId(user.getId());
     }
 
     public List<Task> getTaskById(String empId) {

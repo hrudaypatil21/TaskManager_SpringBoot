@@ -68,12 +68,12 @@ public class ViewController {
         return "fragments/admin-task-form :: adminTaskForm";
     }
 
-    @GetMapping("/fragments/user/{empId}")
-    public String showTaskCardFragment(@PathVariable String empId, Model model) {
-        List<Task> tasks = taskService.getTasksByUserId(empId);
-        model.addAttribute("tasks", tasks);
-        return "fragments/task-card-list";
-    }
+//    @GetMapping("/fragments/user/{empId}")
+//    public String showTaskCardFragment(@PathVariable String empId, Model model) {
+//        List<Task> tasks = taskService.getTasksByUserId(empId);
+//        model.addAttribute("tasks", tasks);
+//        return "fragments/task-card-list";
+//    }
 
     @GetMapping("/fragments/user-sidebar")
     public String showSidebar(Authentication authentication, Model model) {

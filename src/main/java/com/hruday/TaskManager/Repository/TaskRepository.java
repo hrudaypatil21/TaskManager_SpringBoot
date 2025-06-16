@@ -23,8 +23,14 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByTitleContainingIgnoreCase(String title);
     List<Task> findByDescriptionContainingIgnoreCase(String description);
 
+    List<Task> findByAssignedToId(int id);
+
     List<Task> findByAssignedToEmpId(String empId);
     List<Task> findByAssignedByEmpId(String empId);
 
     int countByAssignedToAndStatus(User user, Task.Status status);
+
+    List<Task> findByAssignedToAndStatus(User user, Task.Status status);
+    List<Task> findByAssignedTo(User user);
+
 }

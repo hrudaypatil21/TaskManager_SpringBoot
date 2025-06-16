@@ -24,12 +24,12 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or #empId == authentication.principal.username")
-    @GetMapping("/user/{empId}")
-    public ResponseEntity<List<Task>> getTasksByUser(@PathVariable String empId) {
-        List<Task> tasks = taskService.getTasksByUserId(empId);
-        return ResponseEntity.ok(tasks);
-    }
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or #empId == authentication.principal.username")
+//    @GetMapping("/user/{empId}")
+//    public ResponseEntity<List<Task>> getTasksByUser(@PathVariable String empId) {
+//        List<Task> tasks = taskService.getTasksByUserId(empId);
+//        return ResponseEntity.ok(tasks);
+//    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")

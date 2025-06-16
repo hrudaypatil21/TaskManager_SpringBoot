@@ -1,17 +1,64 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">>
-<head>
-    <meta charset="UTF-8">
-    <title>Task Management System</title>
-</head>
-<body>
+<!-- Table 1 - Bootstrap Brain Component -->
+<div th:fragment="taskCard">
+    <h3 class="card-title widget-card-title mb-4">Your tasks</h3>
 
-<div class="task-card">
-    <h3 th:text="${task.title}">Task Title</h3>
-    <p th:text="${task.description}">Task Description</p>
-    <small>Status: <span th:text="${task.status}">TODO</span></small>
-    <small>Due: <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}">Date</span></small>
+    <section class="py-3 py-md-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8">
+                <div class="card widget-card border-light shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="table-responsive">
+                            <table class="table table-borderless bsb-table-xl text-nowrap align-middle m-0">
+                                <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Due Date</th>
+                                    <th>Assigned By</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="task : ${tasks}">
+                                    <td>
+                                        <h6 class="mb-1" th:text="${task.title}">Title</h6>
+                                    </td>
+                                    <td>
+                                        <h6 class="mb-1" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</h6>
+                                        <span class="text-secondary fs-7" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</span>
+                                    </td>
+                                    <td th:text="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.name}">Assigner
+                                    </td>
+                                    <td>
+                                        <span class="badge rounded-pill"
+                                              th:text="${task.status}">Status</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </div>
 
-</body>
-</>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Task Management System</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="task-card">-->
+<!--    <h3 th:text="${task.title}">Task Title</h3>-->
+<!--    <p th:text="${task.description}">Task Description</p>-->
+<!--    <small>Status: <span th:text="${task.status}">TODO</span></small>-->
+<!--    <small>Due: <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}">Date</span></small>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</>-->
