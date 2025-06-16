@@ -52,14 +52,20 @@ public class TaskController {
         }
     }
 
-    @PreAuthorize("@taskSecurityService.canUpdateTask(authentication.principal.username, #taskId)")
-    @PutMapping("/update/{taskId}")
-    public ResponseEntity<TaskResponseDTO> updateTask(@PathVariable Long taskId,
-                                                      @Valid @RequestBody UpdateTaskDTO updateTaskDTO) {
-        updateTaskDTO.setId(taskId);
-        TaskResponseDTO updatedTask = taskService.updateTask(updateTaskDTO);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedTask);
+    @PreAuthorize("hasRole('ROLE_ADMIN') or #updateTaskDTO.assignedToId == authentication.principal.username")
+    @PutMapping(value = "/update", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<?> updateTask(@ModelAttribute UpdateTaskDTO updateTaskDTO) {
+        try {
+            TaskResponseDTO updatedTask = taskService.updateTask(updateTaskDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(updatedTask);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .badRequest()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .body(e.getMessage());
+        }
     }
+
 
     @PreAuthorize("@taskSecurityService.canDeleteTask(authentication.principal.username, #taskId)")
     @DeleteMapping("/delete/{taskId}")

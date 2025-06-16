@@ -21,7 +21,16 @@
                                 <tbody>
                                 <tr th:each="task : ${tasks}">
                                     <td>
-                                        <h6 class="mb-1" th:text="${task.title}">Title</h6>
+                                        <h6 class="mb-1" >
+                                            <a th:text="${task.title}"
+                                               class="text-decoration-none"
+                                               href="javascript:void(0)"
+                                               hx-target='body'
+                                               th:attr="hx-get=@{/task/expanded/{id}(id=${task.id})}"
+                                               hx-trigger="click"
+                                               hx-swap="beforeend">
+                                            </a>
+                                        </h6>
                                     </td>
                                     <td>
                                         <h6 class="mb-1" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</h6>
@@ -30,8 +39,11 @@
                                     <td th:text="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.name}">Assigner
                                     </td>
                                     <td>
-                                        <span class="badge rounded-pill"
-                                              th:text="${task.status}">Status</span>
+  <span class="badge"
+        th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
+        th:text="${task.status.name().toUpperCase()}">
+    Status
+  </span>
                                     </td>
                                 </tr>
                                 </tbody>

@@ -1,0 +1,74 @@
+<!-- Expanded Task Modal Fragment -->
+<div th:fragment="expandedTaskCard(task)">
+  <div class="modal fade show d-block" tabindex="-1" role="dialog" style="background: rgba(0,0,0,0.6);">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <form th:id="'task-edit-form-' + ${task.id}"
+              th:object="${task}"
+              hx-put="/api/tasks/update"
+              hx-trigger="submit"
+              hx-target="closest .modal"
+              hx-swap="outerHTML"
+              class="needs-validation"
+              novalidate>
+
+
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Task</h5>
+            <button type="button" class="btn-close" onclick="this.closest('.modal').remove()"></button>
+          </div>
+
+          <input type="hidden" name="id" th:value="${task.id}" />
+
+          <div class="modal-body">
+            <!-- Title -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input id="title" type="text" class="form-control" th:field="*{title}" required>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea id="description" class="form-control" th:field="*{description}" rows="3"></textarea>
+            </div>
+
+            <!-- Due Date -->
+            <div class="mb-3">
+              <label for="dueDate" class="form-label">Due Date & Time</label>
+              <input type="datetime-local"
+                     id="dueDate"
+                     class="form-control"
+                     th:field="*{dueDate}" />
+            </div>
+
+            <!-- Assigned By -->
+            <div class="mb-3">
+              <label class="form-label">Assigned By</label>
+              <input type="text"
+                     class="form-control"
+                     th:value="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.name}"
+                     disabled>
+            </div>
+
+            <!-- Status -->
+            <div class="mb-3">
+              <label for="status" class="form-label">Status</label>
+              <select class="form-select" th:field="*{status}" id="status">
+                <option th:value="TODO">To Do</option>
+                <option th:value="IN_PROGRESS">In Progress</option>
+                <option th:value="DONE">Done</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

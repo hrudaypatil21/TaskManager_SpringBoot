@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -29,7 +30,6 @@ public class TaskService {
 
     @Transactional
     public TaskResponseDTO createTask(CreateTaskDTO createTaskDTO) {
-
         User assignedBy = userRepository.findByEmpId(createTaskDTO.getAssignedById())
                 .orElseThrow(() -> new RuntimeException("Assigner not found"));
 
@@ -114,7 +114,11 @@ public class TaskService {
         return taskRepository.findByAssignedToId(user.getId());
     }
 
-    public List<Task> getTaskById(String empId) {
+    public Optional<Task> getTaskById(Long id) {
+        return taskRepository.findById(id);
+    }
+
+    public List<Task> getTaskByUserId(String empId) {
         List<Task> tasks = taskRepository.findByAssignedToEmpId(empId);
         if(tasks.isEmpty()) {
             throw new RuntimeException("No tasks found");

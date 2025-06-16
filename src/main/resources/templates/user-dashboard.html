@@ -248,9 +248,41 @@
   font-size: 1.1rem;
 }
 
-    .badge.bg-todo { background-color: #dc3545; }         /* red */
-.badge.bg-in-progress { background-color: #ffc107; }   /* yellow */
-.badge.bg-done { background-color: #28a745; }
+.badge {
+  padding: 0.4em 0.8em;
+  font-weight: 600;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+  display: inline-block;
+
+}
+
+.badge.bg-todo {
+  background-color: #dc3545;
+  --bs-badge-color: #ffffff;
+  color: var(--bs-badge-color) !important;
+}
+
+.badge.bg-in-progress {
+  background-color: #ffc107;
+  --bs-badge-color: #000000;
+  color: var(--bs-badge-color) !important;
+}
+
+.badge.bg-done {
+  background-color: #28a745;
+  --bs-badge-color: #ffffff;
+  color: var(--bs-badge-color) !important;
+}
+
+
+<!--/* Optional hover effect */-->
+<!--.badge:hover {-->
+<!--  opacity: 0.85;-->
+<!--  transition: opacity 0.2s ease;-->
+<!--}-->
+
     </style>
 </head>
 <body data-emp-id="${#authentication.name}">

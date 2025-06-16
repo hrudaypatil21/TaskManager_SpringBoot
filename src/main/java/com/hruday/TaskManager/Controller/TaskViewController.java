@@ -11,13 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -59,6 +58,19 @@ public class TaskViewController {
         return "fragments/task-card :: taskCard";
     }
 
+//    @GetMapping("/fragments/task-expanded")
+//    public String getExpandedTaskCard(Authentication authentication, Model model) {
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return "fragments/task-card :: taskCard";
+//        }
+//        User user = (User) authentication.getPrincipal();
+//        List<Task> tasks = taskService.getTasksByUserId(user);
+//
+//        model.addAttribute("tasks", tasks);
+//
+//        return "fragments/task-expanded :: taskExpandedCard";
+//    }
+
     @GetMapping("/task/view")
     @ResponseBody
     public ResponseEntity<List<Task>> getTasks(Authentication authentication) {
@@ -70,4 +82,13 @@ public class TaskViewController {
         return ResponseEntity.ok(tasks);
 
     }
+
+    @GetMapping("/task/expanded/{id}")
+    public String getExpandedTask(@PathVariable Long id, Model model) {
+        Task task = taskService.getTaskById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        model.addAttribute("task", task);
+        return "fragments/task-expanded :: expandedTaskCard";
+    }
+
 }
