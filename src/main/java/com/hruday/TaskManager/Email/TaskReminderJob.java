@@ -63,15 +63,17 @@ public class TaskReminderJob implements Job {
                     <body>
                         <h3>Task Reminder</h3>
                         <p>Your task <strong>%s</strong> is due soon.</p>
-                        <p><strong>Due Date:</strong> %s</p>
-                        <p><strong>Description:</strong> %s</p>
+                        <p><strong>Due Date: </strong> %s</p>
+                        <p><strong>Description: </strong> %s</p>
+                        <p><strong>Assigner: </strong> %s</p>
                         <p>Please complete it on time.</p>
                     </body>
                 </html>
                 """,
                     task.getTitle(),
                     DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a").format(task.getDueDate()),
-                    task.getDescription()
+                    task.getDescription(),
+                    task.getAssignedBy().getEmpName()
             );
             emailService.sendMail(to, subject, body);
             logger.info("Reminder sent for task {} to {}", task.getId(), to);

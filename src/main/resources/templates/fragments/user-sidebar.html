@@ -32,6 +32,15 @@
         Create
       </a>
     </li>
+    <li>
+      <div sec:authorize="hasRole('ROLE_ADMIN')">
+      <a href="/register"
+         class="nav-link text-gray-300 hover:bg-gray-700">
+        <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#speedometer2"></use></svg>
+        Register
+      </a>
+      </div>
+    </li>
 
     <li>
       <div class="d-flex flex-column align-items-center justify-content-center mt-auto">

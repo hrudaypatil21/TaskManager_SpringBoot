@@ -2,7 +2,10 @@ package com.hruday.TaskManager.Controller;
 
 import com.hruday.TaskManager.DTO.UserDTO.UserRegisterDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
+import com.hruday.TaskManager.Email.EmailService;
 import com.hruday.TaskManager.Service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private UserService userService;
 
@@ -21,8 +26,11 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@ModelAttribute UserRegisterDTO userRegisterDTO) {
         try {
             UserResponseDTO newUser = userService.createUser(userRegisterDTO);
+            logger.info("Created user: {}", userRegisterDTO.getEmpId());
             return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
         } catch (RuntimeException e) {
+            logger.error("Could not register new user: {}", userRegisterDTO.getEmpId(), e);
+
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
