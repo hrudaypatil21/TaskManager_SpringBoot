@@ -33,7 +33,17 @@ public class TaskViewController {
     @Autowired
     private UserService userService;
 
+    @PostMapping("/tasks/search")
+    public String searchTasks(
+            @RequestParam String query,
+            Model model,
+            Authentication authentication) {
 
+        List<Task> tasks = taskService.searchTasks(query, authentication);
+        model.addAttribute("tasks", tasks);
+
+        return "fragments/task-rows :: taskRows";
+    }
 
     @GetMapping("/fragments/task-count")
     public String getTaskCount(Authentication authentication, Model model) {
@@ -49,6 +59,7 @@ public class TaskViewController {
 
     @GetMapping("fragments/task-card")
     public String getTaskCard(Model model, Authentication authentication) {
+
         if (authentication == null || !authentication.isAuthenticated()) {
             return "fragments/task-card :: taskCard";
         }

@@ -57,7 +57,6 @@ public class TaskController {
                     .body(e.getMessage());
         }
 
-
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #updateTaskDTO.assignedToId == authentication.principal.username")

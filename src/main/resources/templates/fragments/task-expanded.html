@@ -24,13 +24,24 @@
             <!-- Title -->
             <div class="mb-3">
               <label for="title" class="form-label">Title</label>
-              <input id="title" type="text" class="form-control" th:field="*{title}" required>
+              <input id="title"
+                     type="text"
+                     class="form-control"
+                     th:field="*{title}"
+                     th:disabled="${task.assignedBy.id != task.assignedTo.id}"
+                     required>
             </div>
 
             <!-- Description -->
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
-              <textarea id="description" class="form-control" th:field="*{description}" rows="3"></textarea>
+              <textarea id="description"
+                        class="form-control"
+                        th:field="*{description}"
+                        th:disabled="${task.assignedBy.id != task.assignedTo.id}"
+                        rows="3">
+
+              </textarea>
             </div>
 
             <!-- Due Date -->
@@ -38,6 +49,7 @@
               <label for="dueDate" class="form-label">Due Date & Time</label>
               <input type="datetime-local"
                      id="dueDate"
+                     th:disabled="${task.assignedBy.id != task.assignedTo.id}"
                      class="form-control"
                      th:field="*{dueDate}" />
             </div>
@@ -47,7 +59,7 @@
               <label class="form-label">Assigned By</label>
               <input type="text"
                      class="form-control"
-                     th:value="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.name}"
+                     th:value="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}"
                      disabled>
             </div>
 

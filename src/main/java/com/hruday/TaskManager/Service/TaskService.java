@@ -125,7 +125,6 @@ public class TaskService {
         if(tasks.isEmpty()) {
             throw new RuntimeException("No tasks found");
         }
-
         return tasks;
     }
 
@@ -146,4 +145,15 @@ public class TaskService {
 
         return taskRepository.countByAssignedToAndStatus(user, status);
     }
+
+    @Transactional(readOnly = true)
+    public List<Task> searchTasks(String query, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        User user = (User) authentication.getPrincipal();
+        return taskRepository.searchTasks(query.toLowerCase(), user.getEmpId());
+    }
+
 }

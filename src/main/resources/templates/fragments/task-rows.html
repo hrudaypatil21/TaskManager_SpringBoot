@@ -1,0 +1,32 @@
+<th:block th:fragment="taskRows">
+    <tr th:each="task : ${tasks}">
+        <td>
+            <h6 class="mb-1">
+                <a th:text="${task.title}"
+                   class="text-decoration-none"
+                   href="javascript:void(0)"
+                   hx-target="body"
+                   th:attr="hx-get=@{/task/expanded/{id}(id=${task.id})}"
+                   hx-trigger="click"
+                   hx-swap="beforeend">
+                </a>
+            </h6>
+            <p class="text-muted small mb-0" th:text="${task.description}"></p>
+        </td>
+        <td>
+            <h6 class="mb-1" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</h6>
+            <span class="text-secondary fs-7" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</span>
+        </td>
+        <td th:text="${task.assignedBy.empId == task.assignedTo.empId ? 'Self' : task.assignedBy.empName}">Assigner</td>
+        <td>
+            <span class="badge"
+                  th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
+                  th:text="${task.status.name()}">
+                Status
+            </span>
+        </td>
+    </tr>
+    <tr th:if="${tasks.isEmpty()}">
+        <td colspan="4" class="text-center">No tasks found matching your search</td>
+    </tr>
+</th:block>

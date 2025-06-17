@@ -2,6 +2,7 @@ package com.hruday.TaskManager.Repository;
 
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -26,6 +27,16 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByAssignedToId(int id);
 
     List<Task> findAllByDueDateBetween(LocalDateTime start, LocalDateTime end);
+
+    @Query("SELECT t FROM Task t WHERE " +
+            "(LOWER(t.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR STR(t.status) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND t.assignedTo.empId = :empId")
+    List<Task> searchTasks(
+            @Param("query") String query,
+            @Param("empId") String empId);
+
 
     List<Task> findByAssignedToEmpId(String empId);
     List<Task> findByAssignedByEmpId(String empId);
