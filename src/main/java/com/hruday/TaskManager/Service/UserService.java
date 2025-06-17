@@ -3,6 +3,7 @@ package com.hruday.TaskManager.Service;
 import com.hruday.TaskManager.DTO.UserDTO.UserLoginDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserRegisterDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
+import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.UserRepository;
 //import com.hruday.TaskManager.Security.CustomUserDetailsService;
@@ -29,6 +30,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
 
     @Transactional
     public UserResponseDTO createUser(UserRegisterDTO userRegisterDTO) {

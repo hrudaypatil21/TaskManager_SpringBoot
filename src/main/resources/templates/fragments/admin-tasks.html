@@ -73,9 +73,13 @@
                         </span>
                     </td>
                     <td >
-                      <button >
-                        Remind
-                      </button>
+                      <form hx-post="/admin-remind-mail"
+                            hx-swap="none">
+                        <input type="hidden"
+                               name="taskId"
+                               th:value="${task.id}" />
+                        <button type="submit">Remind</button>
+                      </form>
                     </td>
                   </tr>
                   </tbody>

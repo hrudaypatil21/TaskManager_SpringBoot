@@ -81,4 +81,34 @@ public class TaskReminderJob implements Job {
             logger.error("Failed to send reminder for task {}", task.getId(), e);
         }
     }
+
+    public void sendAdminEmail(Task task) {
+        try {
+            String to = task.getAssignedTo().getEmail();
+            String subject = "Task Reminder: " + task.getTitle();
+            String from = task.getAssignedBy().getEmail();
+
+            String body = String.format("""
+                <html>
+                    <body>
+                        <h3>Task Reminder</h3>
+                        <p>Your task <strong>%s</strong> is due soon.</p>
+                        <p><strong>Due Date: </strong> %s</p>
+                        <p><strong>Description: </strong> %s</p>
+                        <p><strong>Assigner: </strong> %s</p>
+                        <p>Please complete it on time.</p>
+                    </body>
+                </html>
+                """,
+                    task.getTitle(),
+                    DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a").format(task.getDueDate()),
+                    task.getDescription(),
+                    task.getAssignedBy().getEmpName()
+            );
+            emailService.sendAdminEmail(from, to, subject, body);
+            logger.info("Reminder sent for task {} to {}", task.getId(), to);
+        } catch (Exception e) {
+            logger.error("Failed to send reminder for task {}", task.getId(), e);
+        }
+    }
 }

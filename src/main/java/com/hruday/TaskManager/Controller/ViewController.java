@@ -1,12 +1,16 @@
 package com.hruday.TaskManager.Controller;
 
+import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
+import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Security.AuthHelper;
 import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
 import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -28,6 +32,12 @@ public class ViewController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskReminderJob taskReminderJob;
 
     @GetMapping("/register")
     public String showRegistrationForm() {
@@ -82,6 +92,23 @@ public class ViewController {
 //        model.addAttribute("tasks", tasks);
 //        return "fragments/task-card-list";
 //    }
+
+    @PostMapping("/admin-remind-mail")
+    @ResponseBody
+    public ResponseEntity<String> sendAdminMail(@RequestParam Long taskId, Authentication authentication, Model model) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("cant find task"));
+
+        User user = (User) authentication.getPrincipal();
+
+        String currentEmail = user.getEmail();
+
+        if (!task.getAssignedBy().getEmail().equals(currentEmail)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to send");        }
+
+        taskReminderJob.sendAdminEmail(task);
+        return ResponseEntity.ok("Reminder sent successfully");
+    }
 
     @GetMapping("/fragments/user-sidebar")
     public String showSidebar(Authentication authentication, Model model) {
