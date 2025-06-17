@@ -16,12 +16,24 @@
     </div>
 
     <div class="task-form-group">
+      <label for="assignToId"> Assign a User</label>
+      <div hx-get="/get-all-users" hx-trigger="load" hx-target="#user-dropdown" hx-swap="innerHTML"></div>
+
+      <!-- placeholder that will be replaced -->
+      <div id="user-dropdown">
+        <select id="assignToId" class="form-select" disabled><option>Loading...</option></select>
+      </div>
+
+    </div>
+
+    <div class="task-form-group">
       <label for="dueDate">Due Date</label>
       <input type="datetime-local" id="dueDate" name="dueDate" required>
     </div>
 
     <input type="hidden" name="assignedById" th:value="${#authentication.name}">
-    <input type="hidden" name="assignedToId" th:value="${#authentication.name}">
+<!--    <input type="hidden" name="assignedToId" th:value="${#authentication.name}">-->
+
     <input type="hidden" name="status" value="TODO">
 
     <div class="submit-button">

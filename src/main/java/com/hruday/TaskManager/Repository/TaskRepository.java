@@ -25,6 +25,8 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByAssignedToId(int id);
 
+    List<Task> findAllByDueDateBetween(LocalDateTime start, LocalDateTime end);
+
     List<Task> findByAssignedToEmpId(String empId);
     List<Task> findByAssignedByEmpId(String empId);
 

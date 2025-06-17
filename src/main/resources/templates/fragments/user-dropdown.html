@@ -1,0 +1,6 @@
+<select th:fragment="userSelect" id="assignedToId" name="assignedToId" class="form-select" required>
+    <option value="" disabled selected>Select User</option>
+    <th:block th:each="user : ${users}">
+        <option th:value="${user.empId}" th:text="${user.empName + ' ' + user.empId}   "></option>
+    </th:block>
+</select>

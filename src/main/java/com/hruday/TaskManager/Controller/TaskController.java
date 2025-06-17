@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,13 +44,20 @@ public class TaskController {
     public ResponseEntity<?> createTask(@ModelAttribute CreateTaskDTO createTaskDTO) {
         try {
             TaskResponseDTO newTask = taskService.createTask(createTaskDTO);
+            System.out.println("AssignedToId: " + createTaskDTO.getAssignedToId());
+            System.out.println("Current User (empId): " + SecurityContextHolder.getContext().getAuthentication().getName());
+
             return ResponseEntity.status(HttpStatus.CREATED).body(newTask);
         } catch (RuntimeException e) {
+            System.out.println("AssignedToId: " + createTaskDTO.getAssignedToId());
+            System.out.println("Current User (empId): " + SecurityContextHolder.getContext().getAuthentication().getName());
             return ResponseEntity
                     .badRequest()
                     .contentType(MediaType.TEXT_PLAIN)
                     .body(e.getMessage());
         }
+
+
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or #updateTaskDTO.assignedToId == authentication.principal.username")

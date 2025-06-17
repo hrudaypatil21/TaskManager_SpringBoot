@@ -69,6 +69,9 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found with this ID"));
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 }
 //    public User authenticateUser(String empId, String password) {
 //        User user = userRepository.findByEmpId(empId)

@@ -9,9 +9,9 @@
               hx-trigger="submit"
               hx-target="closest .modal"
               hx-swap="outerHTML"
+              hx-on="htmx:afterRequest: window.location.reload()"
               class="needs-validation"
               novalidate>
-
 
           <div class="modal-header">
             <h5 class="modal-title">Edit Task</h5>

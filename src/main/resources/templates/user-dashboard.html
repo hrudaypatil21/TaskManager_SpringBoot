@@ -322,7 +322,12 @@
          hx-swap="outerHTML">
     </div>
 
-    <div id="mainContentContainer" class="flex-grow-1 p-4">
+    <div id="mainContentContainer"
+         hx-get="/fragments/task-count"
+         hx-trigger="load"
+         hx-swap="innerHTML"
+         class="flex-grow-1 p-4">
+
     </div>
 <!--    &lt;!&ndash; Main content &ndash;&gt;-->
 <!--    <div id="taskContentContainer" class="flex-grow-1 p-4">-->

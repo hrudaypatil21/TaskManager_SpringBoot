@@ -1,5 +1,7 @@
 package com.hruday.TaskManager.Controller;
 
+import com.hruday.TaskManager.DTO.TaskDTO.TaskResponseDTO;
+import com.hruday.TaskManager.DTO.TaskDTO.UpdateTaskDTO;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Security.AuthHelper;
@@ -80,7 +82,6 @@ public class TaskViewController {
         User user = (User) authentication.getPrincipal();
         List<Task> tasks = taskService.getTasksByUserId(user);
         return ResponseEntity.ok(tasks);
-
     }
 
     @GetMapping("/task/expanded/{id}")
@@ -90,5 +91,10 @@ public class TaskViewController {
         model.addAttribute("task", task);
         return "fragments/task-expanded :: expandedTaskCard";
     }
+
+//    @GetMapping("/update")
+//    public String updateTask(@ModelAttribute UpdateTaskDTO updateTaskDTO, Model model) {
+//        TaskResponseDTO updatedTask = taskService.
+//    }
 
 }

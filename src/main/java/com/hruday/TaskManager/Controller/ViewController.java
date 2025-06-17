@@ -5,6 +5,7 @@ import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Security.AuthHelper;
 import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +37,13 @@ public class ViewController {
     @GetMapping("/login")
     public String showLoginForm() {
         return "login";
+    }
+
+    @GetMapping("/get-all-users")
+    public String getAllUsers(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        return "fragments/user-dropdown :: userSelect";
     }
 
     @GetMapping("/admin-dashboard")
