@@ -1,86 +1,89 @@
 <!-- Table 1 - Bootstrap Brain Component -->
 <div th:fragment="taskCard" id="taskList">
-    <h3 class="card-title widget-card-title mb-4">Your tasks</h3>
+    <h3 class="card-title widget-card-title mb-4 text-center fw-bold">Your Tasks</h3>
 
-    <section class="py-3 py-md-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-9 col-xl-8">
-                <div class="card widget-card border-light shadow-sm">
-                    <div class="card-body p-4">
-                        <div class="table-responsive">
+    <section class="py-3 py-md-4">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-10 col-xl-9">
+                    <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
+                        <div class="card-body p-4">
+
+                            <!-- Search Bar -->
                             <form hx-post="/tasks/search"
                                   hx-target="#taskTableBody"
                                   hx-trigger="keyup changed delay:500ms, search"
-                                  class="mb-3">
-                                <div class="input-group">
+                                  class="mb-4">
+                                <div class="input-group input-group-lg shadow-sm">
                                     <input type="search"
                                            name="query"
-                                           class="form-control"
-                                           placeholder="Search tasks by title, description or status..."
+                                           class="form-control rounded-start border-0"
+                                           placeholder="Search by title, description, or status..."
                                            hx-post="/tasks/search"
                                            hx-trigger="keyup changed delay:500ms, search"
                                            hx-target="#taskTableBody"
-                                           hx-indicator=".search-indicator"/>
-                                    <span class="input-group-text">
-            <i class="bi bi-search"></i>
-        </span>
+                                           hx-indicator=".search-indicator"
+                                           style="background-color: #f8f9fa;">
+                                    <span class="input-group-text bg-white border-0">
+                    <i class="bi bi-search"></i>
+                  </span>
                                 </div>
-                                <div class="search-indicator htmx-indicator mt-2">
-                                    <div class="spinner-border spinner-border-sm" role="status">
+                                <div class="search-indicator htmx-indicator mt-2 ms-1 text-muted small d-flex align-items-center gap-2">
+                                    <div class="spinner-border spinner-border-sm text-secondary" role="status">
                                         <span class="visually-hidden">Loading...</span>
                                     </div>
                                     Searching...
                                 </div>
                             </form>
 
-                            <table class="table table-borderless bsb-table-xl text-nowrap align-middle m-0">
-                                <thead>
-                                <tr>
-                                    <th>Title</th>
-                                    <th>Due Date</th>
-                                    <th>Assigned By</th>
-                                    <th>Status</th>
-                                </tr>
-                                </thead>
-
-                                <tbody id="taskTableBody">
-                                <tr th:each="task : ${tasks}">
-                                    <td>
-                                        <h6 class="mb-1">
+                            <!-- Task Table -->
+                            <div class="table-responsive rounded-4 shadow-sm">
+                                <table class="table table-hover align-middle bg-white rounded-4 overflow-hidden">
+                                    <thead class="table-light">
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Due Date</th>
+                                        <th>Assigned By</th>
+                                        <th>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="taskTableBody">
+                                    <tr th:each="task : ${tasks}">
+                                        <td>
                                             <a th:text="${task.title}"
-                                               class="text-decoration-none"
+                                               class="text-decoration-none fw-medium text-primary"
                                                href="javascript:void(0)"
                                                hx-target="body"
                                                th:attr="hx-get=@{/task/expanded/{id}(id=${task.id})}"
                                                hx-trigger="click"
                                                hx-swap="beforeend">
                                             </a>
-                                        </h6>
-                                    </td>
-                                    <td>
-                                        <h6 class="mb-1" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</h6>
-                                        <span class="text-secondary fs-7" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</span>
-                                    </td>
-                                    <td th:text="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}">Assigner</td>
-                                    <td>
-                    <span class="badge"
-                          th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
-                          th:text="${task.status.name().toUpperCase()}">
-                        Status
-                    </span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                        </td>
+                                        <td>
+                                            <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
+                                            <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
+                                        </td>
+                                        <td th:text="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}">
+                                            Assigner
+                                        </td>
+                                        <td>
+                        <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
+                              th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
+                              th:text="${task.status.name().toUpperCase()}">
+                          Status
+                        </span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </div>
 
 <!--<!DOCTYPE html>-->

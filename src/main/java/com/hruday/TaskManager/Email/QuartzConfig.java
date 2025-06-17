@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
+import java.util.Properties;
+
 @Configuration
 public class QuartzConfig {
 
@@ -24,23 +26,25 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
                 .withIdentity("taskReminderTrigger")
-                .withSchedule(SimpleScheduleBuilder
-                        .simpleSchedule()
-                        .withIntervalInMinutes(1) // run every 10 min
-                        .repeatForever())
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(13, 42)) // Run daily at 9 AM
                 .build();
     }
 
-    @Autowired
-    private AutowiringSpringBeanJobFactory jobFactory;
-
-
     @Bean
-    public SchedulerFactoryBean schedulerFactoryBean(JobDetail jobDetail,  Trigger trigger) {
-        SchedulerFactoryBean factory = new SchedulerFactoryBean();
-        factory.setJobFactory(jobFactory);
-        return factory;
-    }
+    public SchedulerFactoryBean schedulerFactoryBean(JobDetail jobDetail,  Trigger trigger, AutowiringSpringBeanJobFactory jobFactory) {
+        SchedulerFactoryBean schedulerFactory = new SchedulerFactoryBean();
 
+        Properties quartzProperties = new Properties();
+        quartzProperties.setProperty("org.quartz.scheduler.instanceName", "TaskReminderScheduler");
+        quartzProperties.setProperty("org.quartz.threadPool.threadCount", "5");
+
+        schedulerFactory.setJobFactory(jobFactory);
+        schedulerFactory.setJobDetails(jobDetail);
+        schedulerFactory.setTriggers(trigger);
+        schedulerFactory.setQuartzProperties(quartzProperties);
+        schedulerFactory.setAutoStartup(true);
+
+        return schedulerFactory;
+    }
 
 }
