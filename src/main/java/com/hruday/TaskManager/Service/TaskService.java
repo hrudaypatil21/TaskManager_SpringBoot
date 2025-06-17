@@ -116,6 +116,11 @@ public class TaskService {
         return taskRepository.findByAssignedToId(user.getId());
     }
 
+    public List<Task> getAdminTasksByUserId(User user) {
+        return taskRepository.findTasksAssignedByUserToOthers(user.getId());
+    }
+
+
     public Optional<Task> getTaskById(Long id) {
         return taskRepository.findById(id);
     }

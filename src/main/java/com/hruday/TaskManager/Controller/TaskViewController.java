@@ -50,6 +50,7 @@ public class TaskViewController {
         return "fragments/task-count :: taskCount";
     }
 
+
     @GetMapping("/task/status-count")
     @ResponseBody
     public String getTaskCountByStatus(@RequestParam String status, Authentication authentication) {
@@ -70,6 +71,30 @@ public class TaskViewController {
 
         return "fragments/task-card :: taskCard";
     }
+
+    @GetMapping("fragments/admin-tasks")
+    public String getAdminTask(Model model, Authentication authentication) {
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "fragments/admin-tasks :: adminTaskTable";
+        }
+        User user = (User) authentication.getPrincipal();
+        List<Task> tasks = taskService.getAdminTasksByUserId(user);
+
+        model.addAttribute("tasks", tasks);
+
+        return "fragments/admin-tasks :: adminTaskTable";
+    }
+
+//    @GetMapping("/fragments/user-sidebar")
+//    public String showSidebar(Authentication authentication, Model model) {
+//        if(authentication!=null && authentication.getPrincipal() instanceof User) {
+//            User user = (User) authentication.getPrincipal();
+//            model.addAttribute("empName" , user.getEmpName());
+//            model.addAttribute("empId", user.getEmpId());
+//        }
+//        return "fragments/user-sidebar :: userSidebar";
+//    }
 
 //    @GetMapping("/fragments/task-expanded")
 //    public String getExpandedTaskCard(Authentication authentication, Model model) {

@@ -17,6 +17,8 @@
     </div>
   </div>
 
+
+
   <!-- Done Card -->
   <div class="task-card">
     <h2>Done</h2>
@@ -29,7 +31,16 @@
 
 </div>
 
-<div id="taskTableContainer"
+    <div id="adminTaskTableContainer"
+         class="text-gray-300 hover:bg-gray-700"
+         hx-get="/fragments/admin-tasks"
+         hx-trigger="load"
+         hx-swap="innerHTML">
+      <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#home"></use></svg>
+      Loading table...
+    </div>
+
+  <div id="taskTableContainer"
      class="text-gray-300 hover:bg-gray-700"
      hx-get="/fragments/task-card"
      hx-trigger="load"

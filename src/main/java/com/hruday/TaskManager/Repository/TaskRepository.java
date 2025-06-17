@@ -26,6 +26,9 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByAssignedToId(int id);
 
+    @Query("SELECT t FROM Task t WHERE t.assignedBy.id = :userId AND t.assignedTo.id <> :userId")
+    List<Task> findTasksAssignedByUserToOthers(@Param("userId") int userId);
+
     List<Task> findAllByDueDateBetween(LocalDateTime start, LocalDateTime end);
 
     @Query("SELECT t FROM Task t WHERE " +

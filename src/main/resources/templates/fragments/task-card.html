@@ -9,11 +9,12 @@
                     <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
                         <div class="card-body p-4">
 
+<!--                            hx-post="/tasks/search"-->
+<!--                            hx-target="#taskTableBody"-->
+<!--                            hx-trigger="keyup changed delay:500ms, search"-->
+
                             <!-- Search Bar -->
-                            <form hx-post="/tasks/search"
-                                  hx-target="#taskTableBody"
-                                  hx-trigger="keyup changed delay:500ms, search"
-                                  class="mb-4">
+                            <form class="mb-4">
                                 <div class="input-group input-group-lg shadow-sm">
                                     <input type="search"
                                            name="query"
@@ -43,7 +44,7 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Due Date</th>
-                                        <th>Assigned By</th>
+                                        <th>Assigned To</th>
                                         <th>Status</th>
                                     </tr>
                                     </thead>
@@ -63,8 +64,8 @@
                                             <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
                                             <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
                                         </td>
-                                        <td th:text="${task.assignedBy?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}">
-                                            Assigner
+                                        <td th:text="${task.assignedTo?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}">
+                                            Assignee
                                         </td>
                                         <td>
                         <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
@@ -85,6 +86,7 @@
         </div>
     </section>
 </div>
+
 
 <!--<!DOCTYPE html>-->
 <!--<html lang="en" xmlns:th="http://www.thymeleaf.org">>-->

@@ -1,0 +1,111 @@
+<!-- Table 1 - Bootstrap Brain Component -->
+<div th:fragment="adminTaskTable" id="taskList">
+  <div  sec:authorize="hasRole('ROLE_ADMIN')">
+  <h3 class="card-title widget-card-title mb-4 text-center fw-bold">Assigned Tasks</h3>
+
+  <section class="py-3 py-md-4">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+          <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
+            <div class="card-body p-4">
+
+              <!-- Search Bar -->
+              <form class="mb-4">
+                <div class="input-group input-group-lg shadow-sm">
+                  <input type="search"
+                         name="query"
+                         class="form-control rounded-start border-0"
+                         placeholder="Search by title, description, or status..."
+                         hx-post="/tasks/search"
+                         hx-trigger="keyup changed delay:500ms, search"
+                         hx-target="#taskTableBody"
+                         hx-indicator=".search-indicator"
+                         style="background-color: #f8f9fa;">
+                  <span class="input-group-text bg-white border-0">
+                    <i class="bi bi-search"></i>
+                  </span>
+                </div>
+                <div class="search-indicator htmx-indicator mt-2 ms-1 text-muted small d-flex align-items-center gap-2">
+                  <div class="spinner-border spinner-border-sm text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  Searching...
+                </div>
+              </form>
+
+              <!-- Task Table -->
+              <div class="table-responsive rounded-4 shadow-sm">
+                <table class="table table-hover align-middle bg-white rounded-4 overflow-hidden">
+                  <thead class="table-light">
+                  <tr>
+                    <th>Title</th>
+                    <th>Due Date</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                    <th >Action</th>
+                  </tr>
+                  </thead>
+                  <tbody id="taskTableBody">
+                  <tr th:each="task : ${tasks}">
+                    <td>
+                      <a th:text="${task.title}"
+                         class="text-decoration-none fw-medium text-primary"
+                         href="javascript:void(0)"
+                         hx-target="body"
+                         th:attr="hx-get=@{/task/expanded/{id}(id=${task.id})}"
+                         hx-trigger="click"
+                         hx-swap="beforeend">
+                      </a>
+                    </td>
+                    <td>
+                      <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
+                      <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
+                    </td>
+                    <td th:text="${task.assignedTo.empId}">
+                      Assignee
+                    </td>
+                    <td>
+                        <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
+                              th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
+                              th:text="${task.status.name().toUpperCase()}">
+                          Status
+                        </span>
+                    </td>
+                    <td >
+                      <button >
+                        Remind
+                      </button>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  </div>
+</div>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">>-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Task Management System</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="task-card">-->
+<!--    <h3 th:text="${task.title}">Task Title</h3>-->
+<!--    <p th:text="${task.description}">Task Description</p>-->
+<!--    <small>Status: <span th:text="${task.status}">TODO</span></small>-->
+<!--    <small>Due: <span th:text="${#temporals.format(task.dueDate, 'dd MMM yyyy')}">Date</span></small>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</>-->
