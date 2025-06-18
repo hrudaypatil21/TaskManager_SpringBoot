@@ -25,7 +25,7 @@
     <li>
       <a href="javascript:void(0)"
          class="nav-link text-white hover:bg-gray-700"
-         th:attr="hx-get=${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/admin-dashboard/task/new' : '/dashboard/task/new'}"
+         th:attr="hx-get=@{${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? 'fragments/admin-task-form' : 'fragments/task-form'}}"
          hx-target="#mainContentContainer"
          hx-swap="innerHTML"
          style="width: 150px;"

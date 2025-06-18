@@ -1,7 +1,9 @@
 package com.hruday.TaskManager.Email;
 
 import com.hruday.TaskManager.Entity.Task;
+import com.hruday.TaskManager.Password.PasswordResetToken;
 import com.hruday.TaskManager.Repository.TaskRepository;
+import com.hruday.TaskManager.Service.PasswordService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -24,6 +26,9 @@ public class TaskReminderJob implements Job {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private PasswordService passwordService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -109,6 +114,28 @@ public class TaskReminderJob implements Job {
             logger.info("Reminder sent for task {} to {}", task.getId(), to);
         } catch (Exception e) {
             logger.error("Failed to send reminder for task {}", task.getId(), e);
+        }
+    }
+
+    public void sendPasswordResetEmail(PasswordResetToken passwordResetToken) {
+        try {
+            String to = passwordResetToken.getUser().getEmail();
+            String subject = "Reset Password ";
+
+            String body = String.format("""
+                <html>
+                    <body>
+                        <h3>Use this token to reset your password: </h3>
+                        <strong>%s</strong>
+                    </body>
+                </html>
+                """,
+                    passwordResetToken.getToken());
+
+            emailService.setPasswordResetEmail(to, subject, body);
+            logger.info("Password Reset mail sent to {} {}", passwordResetToken.getUser().getEmpName(), to);
+        } catch (Exception e) {
+            logger.error("Failed to Password Reset mail to {}",  passwordResetToken.getUser().getEmpName(), e);
         }
     }
 }

@@ -3,21 +3,20 @@ package com.hruday.TaskManager.Controller;
 import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
+import com.hruday.TaskManager.Password.PasswordResetToken;
+import com.hruday.TaskManager.Repository.PasswordRepository;
 import com.hruday.TaskManager.Repository.TaskRepository;
-import com.hruday.TaskManager.Security.AuthHelper;
-import com.hruday.TaskManager.Service.TaskService;
+import com.hruday.TaskManager.Service.PasswordService;
 import com.hruday.TaskManager.Service.UserService;
-import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -25,16 +24,16 @@ import java.util.List;
 public class ViewController {
 
     @Autowired
-    private AuthHelper authHelper;
-
-    @Autowired
-    private TaskService taskService;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
+    private PasswordService passwordService;
+
+    @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private PasswordRepository passwordRepository;
 
     @Autowired
     private TaskReminderJob taskReminderJob;
@@ -66,7 +65,7 @@ public class ViewController {
         return "admin-dashboard";
     }
 
-    @GetMapping("/dashboard/task/new")
+    @GetMapping("fragments/task-form")
     public String showTaskForm(Authentication authentication, Model model) {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
@@ -76,7 +75,7 @@ public class ViewController {
         return "fragments/task-form :: userTaskForm";
     }
 
-    @GetMapping("/admin-dashboard/task/new")
+    @GetMapping("fragments/admin-task-form")
     public String showAdminTaskForm(Authentication authentication, Model model) {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
@@ -95,7 +94,7 @@ public class ViewController {
 
     @PostMapping("/admin-remind-mail")
     @ResponseBody
-    public ResponseEntity<String> sendAdminMail(@RequestParam Long taskId, Authentication authentication, Model model) {
+    public ResponseEntity<String> sendAdminMail(@RequestParam Long taskId, Authentication authentication) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("cant find task"));
 
@@ -106,9 +105,38 @@ public class ViewController {
         if (!task.getAssignedBy().getEmail().equals(currentEmail)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not allowed to send");        }
 
-        taskReminderJob.sendAdminEmail(task);
+        taskReminderJob. sendAdminEmail(task);
         return ResponseEntity.ok("Reminder sent successfully");
     }
+
+    @PostMapping("/password-reset-mail")
+    @ResponseBody
+    public ResponseEntity<String> sendPasswordResetMail(@RequestParam String empId) {
+        User user = userService.getUserByEmpId(empId);
+        PasswordResetToken passwordResetToken = passwordService.createPasswordResetToken(user);
+        taskReminderJob.sendPasswordResetEmail(passwordResetToken);
+
+        return ResponseEntity.ok("Email sent successfully");
+    }
+
+    @GetMapping("/change-password")
+    public String showChangePasswordForm(@RequestParam("token") String token, Model model) {
+        PasswordResetToken resetToken = passwordRepository.findByToken(token);
+        if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            model.addAttribute("error", "Invalid or expired token.");
+            return "error-page";
+        }
+        model.addAttribute("token", token);
+        return "change-password";
+    }
+
+    @GetMapping("/reset-password")
+    public String showResetForm() {
+
+        return "reset-password"; // Thymeleaf view
+    }
+
+
 
     @GetMapping("/fragments/user-sidebar")
     public String showSidebar(Authentication authentication, Model model) {

@@ -67,4 +67,25 @@ public class EmailService {
         }
     }
 
+
+    public void setPasswordResetEmail(String to, String subject, String body) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+            helper.setFrom(fromEmail);
+
+            javaMailSender.send(message);
+            logger.info("Email sent successfully to: {}", to);
+        } catch (Exception e) {
+            logger.error("Failed to send email to: {}", to, e);
+            throw new RuntimeException("Failed to send email", e);
+        }
+    }
+
+
 }
