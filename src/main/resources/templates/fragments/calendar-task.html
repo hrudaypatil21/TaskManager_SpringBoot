@@ -1,0 +1,9 @@
+<div th:fragment="taskCalendarFragment">
+  <h5 th:text="'Tasks on ' + ${selectedDate}">Tasks</h5>
+  <ul>
+    <li th:each="task : ${tasks}">
+      <strong th:text="${task.title}"></strong>
+      <span th:text="${#temporals.format(task.dueDate, 'HH:mm')}"></span>
+    </li>
+  </ul>
+</div>

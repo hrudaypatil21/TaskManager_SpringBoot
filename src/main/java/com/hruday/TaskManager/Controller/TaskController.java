@@ -3,9 +3,14 @@ package com.hruday.TaskManager.Controller;
 import com.hruday.TaskManager.DTO.TaskDTO.CreateTaskDTO;
 import com.hruday.TaskManager.DTO.TaskDTO.TaskResponseDTO;
 import com.hruday.TaskManager.DTO.TaskDTO.UpdateTaskDTO;
+import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.Task;
+import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
+import org.hibernate.query.NativeQuery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,11 +21,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
+
+    private static final Logger logger = LoggerFactory.getLogger(TaskReminderJob.class);
 
     @Autowired
     private TaskService taskService;
@@ -73,12 +84,31 @@ public class TaskController {
         }
     }
 
-
-    @PreAuthorize("@taskSecurityService.canDeleteTask(authentication.principal.username, #taskId)")
     @DeleteMapping("/delete/{taskId}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
         taskService.deleteTask(taskId);
+        logger.info("Task deleted with ID: {}", taskId);
+
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/calender-events")
+    public List<Map<String, Object>> getCalendarEvents(Authentication authentication) {
+        if(authentication == null || !authentication.isAuthenticated()) {
+            logger.warn("Unauthorized access to calendar events");
+            return List.of();
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        List<Task> tasks = taskService.getTasksByUserId(user);
+
+        return tasks.stream().map(task -> {
+            Map<String, Object> event = new HashMap<>();
+            event.put("title", task.getTitle());
+            event.put("start", task.getDueDate().toString());
+            return event;
+        }).collect(Collectors.toList());
     }
 
     @PreAuthorize("#createTaskDTO.assignedToId == authentication.principal.username")

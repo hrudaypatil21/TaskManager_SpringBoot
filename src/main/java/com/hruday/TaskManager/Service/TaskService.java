@@ -99,13 +99,11 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskResponseDTO deleteTask(Long taskId) {
+    public void deleteTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
 
         taskRepository.delete(task);
-
-        return new TaskResponseDTO(task);
     }
 
     public List<Task> getAllTasks() {
@@ -120,8 +118,12 @@ public class TaskService {
         return taskRepository.findTasksAssignedByUserToOthers(user.getId());
     }
 
+    public List<Task> getTasksForUserOnDate(int empId, LocalDateTime date) {
+        return taskRepository.findByAssignedToIdAndDueDate(empId, date);
+    }
 
     public Optional<Task> getTaskById(Long id) {
+
         return taskRepository.findById(id);
     }
 

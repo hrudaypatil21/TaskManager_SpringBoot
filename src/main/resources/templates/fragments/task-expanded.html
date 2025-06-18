@@ -9,11 +9,11 @@
               hx-trigger="submit"
               hx-target="closest .modal"
               hx-swap="outerHTML"
-              hx-on="htmx:afterRequest: window.location.reload()"
+              hx-on::after-request="window.location.reload()"
               class="needs-validation"
               novalidate>
 
-          <div class="modal-header">
+          <div class="modal-header">x
             <h5 class="modal-title">Edit Task</h5>
             <button type="button" class="btn-close" onclick="this.closest('.modal').remove()"></button>
           </div>
@@ -76,7 +76,17 @@
 
           <div class="modal-footer">
             <button type="submit" class="btn btn-success">Save</button>
+            <button type="button"
+                    th:attr="hx-delete='/api/tasks/delete/' + ${task.id}"
+                    hx-trigger="click"
+                    hx-target="closest .modal"
+                    hx-swap="outerHTML"
+                    hx-on::after-request="window.location.reload()"
+                    hx-confirm="Are you sure you wish to delete this task?"
+                    class="btn btn-danger">Delete
+            </button>
             <button type="button" class="btn btn-secondary" onclick="this.closest('.modal').remove()">Cancel</button>
+
           </div>
 
         </form>

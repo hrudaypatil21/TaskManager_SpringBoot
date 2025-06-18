@@ -36,7 +36,7 @@ public class EmailService {
 
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(body);
+            helper.setText(body, true);
             helper.setFrom(fromEmail);
 
             javaMailSender.send(message);
@@ -56,7 +56,7 @@ public class EmailService {
 
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(body);
+            helper.setText(body, true);
             helper.setFrom(from);
 
             javaMailSender.send(message);

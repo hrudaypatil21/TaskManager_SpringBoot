@@ -255,6 +255,13 @@
     <div class="shape"></div>
     <div class="shape"></div>
 </div>
+
+    <a href="/admin-dashboard" type="submit" class="btn-back" style="background:#666b78; color:#fff; padding border:none; font-size:14px; cursor:pointer; text-decoration:none; font-weight:600; position:absolute; top:20px; left:20px;  transition: background-color 0.3s, color 0.3s; border-radius:5px; padding:10px 20px; text-align:center; width:80px; height:40px; display:flex; align-items:center; justify-content:center;"
+            onmouseover="this.style.background='#c9f5ee'; this.style.color='#000';"
+            onmouseout="this.style.background='#666b78'; this.style.color='#fff';">
+        Back
+    </a>
+
 <form  hx-post="/api/auth/register"
        hx-swap="none"
        autocomplete="off"
@@ -317,12 +324,8 @@
       }
     });
 
-    // Handle form submission and show success popup
     document.getElementById('registrationForm').addEventListener('submit', function(e) {
         e.preventDefault();
-
-        // Here you would normally handle the form submission
-        // For demo purposes, we'll just show the popup
 
         // Show success popup
         const popup = document.getElementById('successPopup');

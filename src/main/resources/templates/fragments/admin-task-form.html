@@ -1,5 +1,10 @@
 <div th:fragment="adminTaskForm" class="task-form-container">
-  <form hx-post="/api/tasks/create" hx-swap="none" autocomplete="off" class="task-form" id="taskForm">
+  <form hx-post="/api/tasks/create"
+        hx-swap="none"
+        hx-on::after-request="window.location.reload()"
+        autocomplete="off"
+        class="task-form"
+        id="taskForm">
     <input type="text" name="fakeuser" autocomplete="username" style="display:none">
     <input type="password" name="fakepass" autocomplete="new-password" style="display:none">
 

@@ -8,14 +8,19 @@ import com.hruday.TaskManager.Security.AuthHelper;
 import com.hruday.TaskManager.Service.TaskService;
 import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.jaas.AuthorityGranter;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -119,6 +124,23 @@ public class TaskViewController {
         List<Task> tasks = taskService.getTasksByUserId(user);
         return ResponseEntity.ok(tasks);
     }
+
+    @GetMapping("/tasks/by-date")
+    public String getTasksByDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime date,
+                                 Authentication authentication,
+                                 Model model) {
+        if(authentication==null || !authentication.isAuthenticated())
+        {
+            return "fragments/calendar-task :: taskCalendarFragment";
+        }
+        User user = (User) authentication.getPrincipal();
+        String userId = user.getEmpId();
+        List<Task> tasks = taskService.getTasksForUserOnDate(Integer.parseInt(userId), date);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("selectedDate", date);
+        return "fragments/calendar-task :: taskCalendarFragment";
+    }
+
 
     @GetMapping("/task/expanded/{id}")
     public String getExpandedTask(@PathVariable Long id, Model model) {

@@ -50,6 +50,26 @@
 </div>
 
   <div id="popupContainer"></div>
+
+  <div id="calendar"></div>
+  <div id="taskList"></div>
+
 </div>
-<style>
-</style>
+<script>
+  <!--  calendar-->
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      events: '/api/tasks/calendar-events',
+      dateClick: function (info) {
+        htmx.ajax('GET', '/tasks/by-date?date=' + info.dateStr, {
+          target: '#taskList'
+        });
+      }
+    });
+
+    calendar.render();
+  }); [
+</script>
