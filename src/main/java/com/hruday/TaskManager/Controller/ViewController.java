@@ -1,5 +1,7 @@
 package com.hruday.TaskManager.Controller;
 
+import com.hruday.TaskManager.DTO.UserDTO.UpdatePasswordDTO;
+import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
 import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
@@ -8,6 +10,8 @@ import com.hruday.TaskManager.Repository.PasswordRepository;
 import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Service.PasswordService;
 import com.hruday.TaskManager.Service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,8 @@ import java.util.List;
 @Controller
 @RequestMapping("")
 public class ViewController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ViewController.class);
 
     @Autowired
     private UserService userService;
@@ -118,6 +124,31 @@ public class ViewController {
 
         return ResponseEntity.ok("Email sent successfully");
     }
+
+    @PostMapping("/change-password-form")
+    @ResponseBody
+    public ResponseEntity<?> changePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO) {
+        try {
+            UserResponseDTO savedUser = passwordService.changePassword(updatePasswordDTO);
+            logger.info("Token: {}", updatePasswordDTO.getToken());
+            logger.info("Changed Password: {}", updatePasswordDTO.getPassword());
+            passwordService.checkToken(updatePasswordDTO);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(savedUser);
+        } catch (RuntimeException e) {
+            logger.error("Token error: {}", updatePasswordDTO.getToken()   );
+            passwordService.checkToken(updatePasswordDTO);
+            logger.error("Changed Password error: {}", updatePasswordDTO.getPassword());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+//    @PostMapping("/change-password-form")
+//    public ResponseEntity<?> changePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO) {
+//        System.out.println("Received: " + updatePasswordDTO.getToken()); // debug log
+//
+//        return ResponseEntity.ok("Password updated");
+//    }
+
 //
 //    @GetMapping("/change-password")
 //    public String showChangePasswordForm(@RequestParam("token") String token, Model model) {

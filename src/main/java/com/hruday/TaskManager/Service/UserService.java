@@ -60,25 +60,7 @@ public class UserService {
         return new UserResponseDTO(savedUser);
     }
 
-    @Transactional
-    public UserResponseDTO updatePasswordDTO(UpdatePasswordDTO updatePasswordDTO) {
-        if(!userRepository.existsByEmpId(updatePasswordDTO.getEmpId())) {
-            throw new RuntimeException("User does not exist.");
-        }
 
-        if(!updatePasswordDTO.getPassword().equals(updatePasswordDTO.getConfirmPassword())) {
-            throw new RuntimeException("Passwords do not match.");
-        }
-
-        User updatePassUser = new User();
-        // Must be from DB, not just a new User()
-
-        updatePassUser.setPassword(updatePasswordDTO.getPassword());
-
-        User savedPassUser = userRepository.save(updatePassUser);
-
-        return new UserResponseDTO(savedPassUser);
-    }
 
     public List<User> searchUsers(String query) {
         if (query == null || query.isEmpty()) {

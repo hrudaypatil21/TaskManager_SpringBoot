@@ -1,18 +1,21 @@
 package com.hruday.TaskManager.Service;
 
+import com.hruday.TaskManager.DTO.UserDTO.UpdatePasswordDTO;
+import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Password.PasswordResetToken;
 import com.hruday.TaskManager.Repository.PasswordRepository;
-import jakarta.mail.internet.MimeMessage;
+import com.hruday.TaskManager.Repository.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PasswordService {
@@ -23,30 +26,74 @@ public class PasswordService {
     private PasswordRepository passwordRepository;
 
     @Autowired
-    private JavaMailSender javaMailSender;
+    private UserRepository userRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-
     @Transactional
     public PasswordResetToken createPasswordResetToken(User user) {
-        Optional<PasswordResetToken> existing = passwordRepository.findByUser(user);
-        if (existing.isPresent()) {
-            logger.info("Deleting existing token: {}", existing.get().getToken());
-        } else {
-            logger.warn("No existing token found for user {}", user.getId());
-        }
-        passwordRepository.deleteByUser(user);
+        Integer userId = user.getId();
+        logger.info("Creating token for user ID: {}", userId);
 
-        passwordRepository.deleteByUser(user);
+        Optional<PasswordResetToken> existing = passwordRepository.findByUserId(userId);
+        if (existing.isPresent()) {
+            logger.info("Existing token found for user {}. Deleting it.", userId);
+            passwordRepository.deleteByUserId(userId);
+            entityManager.flush();
+        }
+
+        String generatedToken = UUID.randomUUID().toString();
+        logger.info("Generated new token: {}", generatedToken);
 
         PasswordResetToken token = new PasswordResetToken();
         token.setUser(user);
-        token.setToken(java.util.UUID.randomUUID().toString());
+        token.setToken(generatedToken);
         token.setTokenIssueDate(LocalDateTime.now());
-        token.setExpiryDate(java.time.LocalDateTime.now().plusMinutes(3));
-        return passwordRepository.save(token);
+        token.setExpiryDate(LocalDateTime.now().plusMinutes(5));
+
+        PasswordResetToken savedToken = passwordRepository.save(token);
+        logger.info("Saved token with ID: {}", savedToken.getId());
+
+        return savedToken;
+    }
+
+    @Transactional
+    public UserResponseDTO changePassword(UpdatePasswordDTO updatePasswordDTO) {
+        String tokenValue = updatePasswordDTO.getToken().trim();
+
+        PasswordResetToken token = passwordRepository.findByToken(tokenValue)
+                .orElseThrow(() -> new RuntimeException("Wrong token."));
+
+        if (token.getExpiryDate().isBefore(LocalDateTime.now())) {
+            logger.error("Token expired: {}", tokenValue);
+            throw new RuntimeException("Token expired");
+        }
+
+        if (!updatePasswordDTO.getPassword().equals(updatePasswordDTO.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match.");
+        }
+
+
+        User updatePassUser = token.getUser();
+
+        updatePassUser.setPassword(passwordEncoder.encode(updatePasswordDTO.getPassword()));
+
+        User savedPassUser = userRepository.save(updatePassUser);
+
+        passwordRepository.delete(token);
+
+        return new UserResponseDTO(savedPassUser);
+    }
+
+    public void checkToken(UpdatePasswordDTO updatePasswordDTO) {
+        passwordRepository.isTokenExpired(updatePasswordDTO.getToken());
     }
 
 }

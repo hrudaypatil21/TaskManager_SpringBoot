@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class UpdatePasswordDTO {
 
     @NotNull
-    private String empId;
+    private String token;
 
     @NotNull
     private String password;
