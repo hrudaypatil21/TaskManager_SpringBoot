@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -29,6 +30,8 @@ public class TaskReminderJob implements Job {
 
     @Autowired
     private PasswordService passwordService;
+
+    private static final String tokenLink = "http://localhost:8080/token-form";
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -123,14 +126,16 @@ public class TaskReminderJob implements Job {
             String subject = "Reset Password ";
 
             String body = String.format("""
-                <html>
-                    <body>
-                        <h3>Use this token to reset your password: </h3>
-                        <strong>%s</strong>
-                    </body>
-                </html>
-                """,
-                    passwordResetToken.getToken());
+    <html>
+        <body>
+            <h3>Use this token to reset your password:</h3>
+            <strong>%s</strong>
+
+            <h2>Go to this link and enter the token:</h2>
+            <a href="%s">%s</a>
+        </body>
+    </html>
+    """, passwordResetToken.getToken(), tokenLink, tokenLink);
 
             emailService.setPasswordResetEmail(to, subject, body);
             logger.info("Password Reset mail sent to {} {}", passwordResetToken.getUser().getEmpName(), to);

@@ -149,23 +149,20 @@ transition: background-color 0.3s ease, color 0.3s ease;
   <div class="shape"></div>
   <div class="shape"></div>
 </div>
-<form hx-post="/password-reset-mail"
-      hx-trigger="submit"
-      hx-swap="none"
-      id="resetPasswordForm"
+<form id="tokenForm"
       autocomplete="off">
 
   <h3>Reset Password</h3>
 
-  <label for="empId">Enter your Employee ID</label>
-  <input class="empId"
-         type="text"
-         id="empId"
-         name="empId"
-         th:value="${empId}"
-         placeholder="EMPxyz..." required>
-  <button type="submit">Send Email</button>
+  <label for="token">Enter token send on your email:</label>
+  <input type="text"
+         class="token"
+         id="token"
+         name="token"
+         required>
+  <button type="submit">Confirm</button>
 </form>
+
 <!--  <form hx-post="/admin-remind-mail"-->
 <!--        hx-swap="none">-->
 <!--    <input type="hidden"-->
@@ -188,12 +185,6 @@ transition: background-color 0.3s ease, color 0.3s ease;
   htmx.on("htmx:responseError", function(evt) {
   console.error("HTMX Response Error:", evt.detail.xhr.status, evt.detail.xhr.responseText);
 });
-
-   document.body.addEventListener('htmx:afterRequest', function(evt) {
-    if (evt.target.id === 'resetPasswordForm') {
-      document.getElementById('tokenForm').style.display = 'block';
-    }
-  });
 </script>
 
 </body>

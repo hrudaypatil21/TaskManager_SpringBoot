@@ -1,5 +1,6 @@
 package com.hruday.TaskManager.Service;
 
+import com.hruday.TaskManager.DTO.UserDTO.UpdatePasswordDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserLoginDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserRegisterDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
@@ -59,6 +60,24 @@ public class UserService {
         return new UserResponseDTO(savedUser);
     }
 
+    @Transactional
+    public UserResponseDTO updatePasswordDTO(UpdatePasswordDTO updatePasswordDTO) {
+        if(!userRepository.existsByEmpId(updatePasswordDTO.getEmpId())) {
+            throw new RuntimeException("User does not exist.");
+        }
+
+        if(!updatePasswordDTO.getPassword().equals(updatePasswordDTO.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match.");
+        }
+
+        User updatePassUser = new User();
+        updatePassUser.setPassword(updatePasswordDTO.getPassword());
+
+        User savedPassUser = userRepository.save(updatePassUser);
+
+        return new UserResponseDTO(savedPassUser);
+    }
+
     public List<User> searchUsers(String query) {
         if (query == null || query.isEmpty()) {
             return userRepository.findAll();
@@ -70,6 +89,8 @@ public class UserService {
         return userRepository.findByEmpId(empId)
                 .orElseThrow(() -> new RuntimeException("User not found with this ID"));
     }
+
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();

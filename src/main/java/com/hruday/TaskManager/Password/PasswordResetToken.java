@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "token")
+@Table(name = "password_reset_token")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,6 +27,7 @@ public class PasswordResetToken {
     private LocalDateTime expiryDate;
 
     @OneToOne
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
 
 }

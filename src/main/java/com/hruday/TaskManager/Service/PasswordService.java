@@ -30,12 +30,13 @@ public class PasswordService {
 
     @Transactional
     public PasswordResetToken createPasswordResetToken(User user) {
+        passwordRepository.deleteByUser(user);
 
         PasswordResetToken token = new PasswordResetToken();
         token.setUser(user);
         token.setToken(java.util.UUID.randomUUID().toString());
         token.setTokenIssueDate(LocalDateTime.now());
-        token.setExpiryDate(java.time.LocalDateTime.now().plusHours(1));
+        token.setExpiryDate(java.time.LocalDateTime.now().plusMinutes(3));
         return passwordRepository.save(token);
     }
 

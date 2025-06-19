@@ -136,6 +136,12 @@ public class ViewController {
         return "reset-password"; // Thymeleaf view
     }
 
+    @GetMapping("/token-form")
+    public String showTokenForm() {
+
+        return "token-form"; // Thymeleaf view
+    }
+
 
 
     @GetMapping("/fragments/user-sidebar")
