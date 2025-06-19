@@ -31,7 +31,7 @@ public class TaskReminderJob implements Job {
     @Autowired
     private PasswordService passwordService;
 
-    private static final String tokenLink = "http://localhost:8080/token-form";
+    private static final String tokenLink = "http://localhost:8080/change-password";
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

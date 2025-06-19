@@ -118,17 +118,17 @@ public class ViewController {
 
         return ResponseEntity.ok("Email sent successfully");
     }
-
-    @GetMapping("/change-password")
-    public String showChangePasswordForm(@RequestParam("token") String token, Model model) {
-        PasswordResetToken resetToken = passwordRepository.findByToken(token);
-        if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            model.addAttribute("error", "Invalid or expired token.");
-            return "error-page";
-        }
-        model.addAttribute("token", token);
-        return "change-password";
-    }
+//
+//    @GetMapping("/change-password")
+//    public String showChangePasswordForm(@RequestParam("token") String token, Model model) {
+//        PasswordResetToken resetToken = passwordRepository.findByToken(token);
+//        if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+//            model.addAttribute("error", "Invalid or expired token.");
+//            return "error-page";
+//        }
+//        model.addAttribute("token", token);
+//        return "change-password";
+//    }
 
     @GetMapping("/reset-password")
     public String showResetForm() {
@@ -136,10 +136,10 @@ public class ViewController {
         return "reset-password"; // Thymeleaf view
     }
 
-    @GetMapping("/token-form")
-    public String showTokenForm() {
+    @GetMapping("/change-password")
+    public String showPasswordForm() {
 
-        return "token-form"; // Thymeleaf view
+        return "change-password"; // Thymeleaf view
     }
 
 

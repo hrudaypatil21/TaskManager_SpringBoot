@@ -71,6 +71,8 @@ public class UserService {
         }
 
         User updatePassUser = new User();
+        // Must be from DB, not just a new User()
+
         updatePassUser.setPassword(updatePasswordDTO.getPassword());
 
         User savedPassUser = userRepository.save(updatePassUser);

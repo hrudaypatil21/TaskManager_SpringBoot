@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class PasswordService {
@@ -30,6 +31,14 @@ public class PasswordService {
 
     @Transactional
     public PasswordResetToken createPasswordResetToken(User user) {
+        Optional<PasswordResetToken> existing = passwordRepository.findByUser(user);
+        if (existing.isPresent()) {
+            logger.info("Deleting existing token: {}", existing.get().getToken());
+        } else {
+            logger.warn("No existing token found for user {}", user.getId());
+        }
+        passwordRepository.deleteByUser(user);
+
         passwordRepository.deleteByUser(user);
 
         PasswordResetToken token = new PasswordResetToken();

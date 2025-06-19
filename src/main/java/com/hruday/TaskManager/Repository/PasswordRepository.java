@@ -5,6 +5,8 @@ import com.hruday.TaskManager.Password.PasswordResetToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface PasswordRepository extends JpaRepository<PasswordResetToken, Long> {
 
@@ -12,6 +14,6 @@ public interface PasswordRepository extends JpaRepository<PasswordResetToken, Lo
 
     void deleteByUser(User user);
 
-
+    Optional<PasswordResetToken> findByUser(User user);
 
 }
