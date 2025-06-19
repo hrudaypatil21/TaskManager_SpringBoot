@@ -150,6 +150,13 @@ public class TaskViewController {
         return "fragments/task-expanded :: expandedTaskCard";
     }
 
+//    @GetMapping("/task/status/{status}")
+//    public String getTasksByStatus(@PathVariable("status") String status, Authentication authentication, Model model) {
+//        if(authentication == null || !authentication.isAuthenticated()) {
+//            return "fragments/task-rows :: taskRows";
+//        }
+//    }
+
 //    @GetMapping("/update")
 //    public String updateTask(@ModelAttribute UpdateTaskDTO updateTaskDTO, Model model) {
 //        TaskResponseDTO updatedTask = taskService.

@@ -42,6 +42,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
 
     List<Task> findByAssignedToEmpId(String empId);
+
     List<Task> findByAssignedByEmpId(String empId);
 
     List<Task> findByAssignedToIdAndDueDate(int empId, LocalDateTime date);
@@ -49,6 +50,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     int countByAssignedToAndStatus(User user, Task.Status status);
 
     List<Task> findByAssignedToAndStatus(User user, Task.Status status);
+
     List<Task> findByAssignedTo(User user);
 
 }
