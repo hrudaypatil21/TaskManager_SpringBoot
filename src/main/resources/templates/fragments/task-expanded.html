@@ -13,7 +13,7 @@
               class="needs-validation"
               novalidate>
 
-          <div class="modal-header">x
+          <div class="modal-header">
             <h5 class="modal-title">Edit Task</h5>
             <button type="button" class="btn-close" onclick="this.closest('.modal').remove()"></button>
           </div>
@@ -21,40 +21,34 @@
           <input type="hidden" name="id" th:value="${task.id}" />
 
           <div class="modal-body">
-            <!-- Title -->
+
             <div class="mb-3">
               <label for="title" class="form-label">Title</label>
               <input id="title"
                      type="text"
                      class="form-control"
                      th:field="*{title}"
-                     th:disabled="${task.assignedBy.id != task.assignedTo.id}"
-                     required>
+                     th:disabled="${#authentication.principal.id != task.assignedBy.id and task.assignedBy.id != task.assignedTo.id}"                     required>
             </div>
 
-            <!-- Description -->
             <div class="mb-3">
               <label for="description" class="form-label">Description</label>
               <textarea id="description"
                         class="form-control"
                         th:field="*{description}"
-                        th:disabled="${task.assignedBy.id != task.assignedTo.id}"
-                        rows="3">
+                        th:disabled="${#authentication.principal.id != task.assignedBy.id and task.assignedBy.id != task.assignedTo.id}"                        rows="3">
 
               </textarea>
             </div>
 
-            <!-- Due Date -->
             <div class="mb-3">
               <label for="dueDate" class="form-label">Due Date & Time</label>
               <input type="datetime-local"
                      id="dueDate"
-                     th:disabled="${task.assignedBy.id != task.assignedTo.id}"
-                     class="form-control"
+                     th:disabled="${#authentication.principal.id != task.assignedBy.id and task.assignedBy.id != task.assignedTo.id}"                     class="form-control"
                      th:field="*{dueDate}" />
             </div>
 
-            <!-- Assigned By -->
             <div class="mb-3">
               <label class="form-label">Assigned By</label>
               <input type="text"
@@ -63,7 +57,6 @@
                      disabled>
             </div>
 
-            <!-- Status -->
             <div class="mb-3">
               <label for="status" class="form-label">Status</label>
               <select class="form-select" th:field="*{status}" id="status">

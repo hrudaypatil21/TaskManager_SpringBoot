@@ -63,8 +63,9 @@
                                             <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
                                             <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
                                         </td>
-                                        <td th:text="${task.assignedBy?.id != task.assignedTo?.id ? task.assignedBy?.empName : 'Self' }">
-                                            Assignee
+                                        <td >
+                                            <div class="fw-semibold" th:text="${task.assignedTo?.id == task.assignedBy?.id ? 'Self' : task.assignedBy.empName}">Assignee</div>
+                                            <div class="text-muted small" th:text="${task.assignedTo?.id == task.assignedBy?.id ? '' : task.assignedBy.empId}">AssigneeId</div>
                                         </td>
                                         <td>
                         <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"

@@ -73,6 +73,9 @@ public class SecurityConfig {
                         .failureUrl("/login?error=true")
                         .permitAll()
                 )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/error-page")
+                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout=true")
