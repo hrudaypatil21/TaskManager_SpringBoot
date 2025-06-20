@@ -92,8 +92,8 @@ public class PasswordService {
         return new UserResponseDTO(savedPassUser);
     }
 
-    public void checkToken(UpdatePasswordDTO updatePasswordDTO) {
-        passwordRepository.isTokenExpired(updatePasswordDTO.getToken());
-    }
+//    public void checkToken(UpdatePasswordDTO updatePasswordDTO) {
+//        passwordRepository.isTokenExpired(updatePasswordDTO.getToken());
+//    }
 
 }

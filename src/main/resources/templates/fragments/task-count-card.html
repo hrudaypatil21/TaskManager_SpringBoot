@@ -1,0 +1,55 @@
+<div th:fragment="adminTaskCountCard" sec:authorize="hasRole('ROLE_ADMIN')">
+    <div class="task-status-container" style="display: flex; gap: 1rem; justify-content: space-around;">
+        <div class="task-card"
+             hx-post="/tasks/admin-search"
+             hx-vals='{"query": "TODO"}'
+             hx-trigger="click"
+             hx-target="#adminTaskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>To Do</h2>
+            <div id="adminToDoCount"
+                 hx-get="/task/admin-status-count?status=TODO"
+                 hx-trigger="load"
+                 hx-target="#adminToDoCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+        <div class="task-card"
+             hx-post="/tasks/admin-search"
+             hx-vals='{"query": "IN_PROGRESS"}'
+             hx-trigger="click"
+             hx-target="#adminTaskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>In Progress</h2>
+            <div id="adminInProgressCount"
+                 hx-get="/task/admin-status-count?status=IN_PROGRESS"
+                 hx-trigger="load"
+                 hx-target="#adminInProgressCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+        <div class="task-card"
+             hx-post="/tasks/admin-search"
+             hx-vals='{"query": "DONE"}'
+             hx-trigger="click"
+             hx-target="#adminTaskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>Done</h2>
+            <div id="adminDoneCount"
+                 hx-get="/task/admin-status-count?status=DONE"
+                 hx-trigger="load"
+                 hx-target="#adminDoneCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+    </div>
+</div>

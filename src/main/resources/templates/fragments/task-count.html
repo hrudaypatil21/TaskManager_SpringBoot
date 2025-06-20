@@ -59,7 +59,23 @@
 
 </div>
 
-    <div id="adminTaskTableContainer"
+  <div id="taskTableContainer"
+       class="text-gray-300 hover:bg-gray-700"
+       hx-get="/fragments/task-card"
+       hx-trigger="load"
+       hx-swap="innerHTML">
+    <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#home"></use></svg>
+    Loading table...
+  </div>
+
+<!--  <div id="adminTaskCountCard"-->
+<!--       hx-get="/fragments/task-ca">-->
+<!--    -->
+<!--  </div>-->
+
+    <div th:replace="~{fragments/task-count-card :: adminTaskCountCard}"></div>
+
+  <div id="adminTaskTableContainer"
          class="text-gray-300 hover:bg-gray-700"
          hx-get="/fragments/admin-tasks"
          hx-trigger="load"
@@ -68,14 +84,7 @@
       Loading table...
     </div>
 
-  <div id="taskTableContainer"
-     class="text-gray-300 hover:bg-gray-700"
-     hx-get="/fragments/task-card"
-     hx-trigger="load"
-     hx-swap="innerHTML">
-  <svg class="bi me-2" width="16" height="16" fill="currentColor"><use xlink:href="#home"></use></svg>
-  Loading table...
-</div>
+
 
   <div id="popupContainer"></div>
 

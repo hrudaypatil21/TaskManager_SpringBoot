@@ -132,15 +132,20 @@ public class ViewController {
             UserResponseDTO savedUser = passwordService.changePassword(updatePasswordDTO);
             logger.info("Token: {}", updatePasswordDTO.getToken());
             logger.info("Changed Password: {}", updatePasswordDTO.getPassword());
-            passwordService.checkToken(updatePasswordDTO);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(savedUser);
+
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .header("HX-Trigger", "passwordChangedSuccess")
+                    .body(savedUser);
         } catch (RuntimeException e) {
-            logger.error("Token error: {}", updatePasswordDTO.getToken()   );
-            passwordService.checkToken(updatePasswordDTO);
+            logger.error("Token error: {}", updatePasswordDTO.getToken());
             logger.error("Changed Password error: {}", updatePasswordDTO.getPassword());
-            return ResponseEntity.badRequest().body(e.getMessage());
+
+            return ResponseEntity.badRequest()
+                    .header("HX-Trigger", "passwordChangedFailure")
+                    .body(e.getMessage());
         }
     }
+
 
 //    @PostMapping("/change-password-form")
 //    public ResponseEntity<?> changePassword(@ModelAttribute UpdatePasswordDTO updatePasswordDTO) {

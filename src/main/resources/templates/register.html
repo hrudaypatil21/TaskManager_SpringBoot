@@ -248,6 +248,38 @@
     cursor: pointer;
     font-weight: bold;
 }
+
+        .failure-popup {
+    position: fixed;
+    top: 70px; /* slight offset below success if both are ever shown */
+    right: 20px;
+    background-color: #D8000C; /* bright red */
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.failure-popup.show {
+    transform: translateX(0);
+}
+
+.failure-popup i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.failure-popup .close-btn {
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
     </style>
 </head>
 <body>
@@ -306,6 +338,14 @@
     <span class="close-btn" id="closePopup">&times;</span>
 </div>
 
+<!-- Failure Popup -->
+<div class="failure-popup" id="failurePopup">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>Failed to change password. Please try again.</span>
+    <span class="close-btn" id="closeFailurePopup">&times;</span>
+</div>
+
+
 <script>
     // Toggle password visibility
     const icon = document.getElementById('togglePassword');
@@ -360,6 +400,26 @@
     document.getElementById('closePopup').addEventListener('click', function() {
         document.getElementById('successPopup').classList.remove('show');
     });
+
+     function showFailurePopup() {
+    const failurePopup = document.getElementById('failurePopup');
+    failurePopup.classList.add('show');
+
+    // Hide after 5 seconds
+    setTimeout(() => {
+      failurePopup.classList.remove('show');
+    }, 5000);
+  }
+
+  // Close failure popup manually
+  document.getElementById('closeFailurePopup').addEventListener('click', function () {
+    document.getElementById('failurePopup').classList.remove('show');
+  });
+
+  // Example: Show on failure response (HTMX error event)
+  document.getElementById('tokenForm').addEventListener('htmx:responseError', function () {
+    showFailurePopup();
+  });
 </script>
 
 </body>

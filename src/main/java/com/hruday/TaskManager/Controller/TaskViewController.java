@@ -50,6 +50,18 @@ public class TaskViewController {
         return "fragments/task-rows :: taskRows";
     }
 
+    @PostMapping("/tasks/admin-search")
+    public String searchAdminTasks(
+            @RequestParam String query,
+            Model model,
+            Authentication authentication) {
+
+        List<Task> tasks = taskService.searchAdminTasks(query, authentication);
+        model.addAttribute("tasks", tasks);
+
+        return "fragments/admin-task-rows :: adminTaskRows";
+    }
+
     @GetMapping("/fragments/task-count")
     public String getTaskCount(Authentication authentication, Model model) {
         return "fragments/task-count :: taskCount";
@@ -61,6 +73,19 @@ public class TaskViewController {
     public String getTaskCountByStatus(@RequestParam String status, Authentication authentication) {
         int count = taskService.getTaskCountByStatus(authentication, status);
         return String.valueOf(count); // plain text response for HTMX
+    }
+
+    @GetMapping("/task/admin-status-count")
+    @ResponseBody
+    public String getTaskCountByStatusAssignedBy(@RequestParam String status, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        int count = taskService.getTaskCountByStatusAssignedBy(authentication, status);
+        return String.valueOf(count); // plain text response for HTMX
+    }
+
+    @GetMapping("fragments/task-count-card")
+    public String getAssignedByTaskCard() {
+        return "fragments/task-count-card :: adminTaskCountCard";
     }
 
     @GetMapping("fragments/task-card")

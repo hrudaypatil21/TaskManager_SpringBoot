@@ -2,7 +2,6 @@ package com.hruday.TaskManager.Controller;
 
 import com.hruday.TaskManager.DTO.UserDTO.UserRegisterDTO;
 import com.hruday.TaskManager.DTO.UserDTO.UserResponseDTO;
-import com.hruday.TaskManager.Email.EmailService;
 import com.hruday.TaskManager.Service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

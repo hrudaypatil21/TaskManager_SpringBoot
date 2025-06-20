@@ -43,11 +43,11 @@
                                     <tr>
                                         <th>Title</th>
                                         <th>Due Date</th>
-                                        <th>Assigned To</th>
+                                        <th>Assigned By</th>
                                         <th>Status</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="taskTableBody">
+                                    <tbody id="taskTableBody" class="taskTableBody">
                                     <tr th:each="task : ${tasks}">
                                         <td>
                                             <a th:text="${task.title}"
@@ -63,7 +63,7 @@
                                             <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
                                             <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
                                         </td>
-                                        <td th:text="${task.assignedTo?.id == task.assignedTo?.id ? 'Self' : task.assignedBy?.empName}">
+                                        <td th:text="${task.assignedBy?.id != task.assignedTo?.id ? task.assignedBy?.empName : 'Self' }">
                                             Assignee
                                         </td>
                                         <td>

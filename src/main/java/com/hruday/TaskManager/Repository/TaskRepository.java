@@ -40,6 +40,17 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             @Param("query") String query,
             @Param("empId") String empId);
 
+    @Query("SELECT t FROM Task t WHERE " +
+            "(LOWER(t.title) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(t.description) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR STR(t.status) LIKE LOWER(CONCAT('%', :query, '%'))) " +
+            "AND t.assignedBy.empId = :adminEmpId " +
+            "AND t.assignedTo.empId <> :adminEmpId")
+    List<Task> searchAdminAssignedTasks(
+            @Param("query") String query,
+            @Param("adminEmpId") String empId);
+
+
 
     List<Task> findByAssignedToEmpId(String empId);
 
@@ -48,6 +59,14 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByAssignedToIdAndDueDate(int empId, LocalDateTime date);
 
     int countByAssignedToAndStatus(User user, Task.Status status);
+
+    @Query("SELECT COUNT(t) FROM Task t " +
+            "WHERE t.assignedBy = :admin " +
+            "AND t.assignedTo <> :admin " +
+            "AND t.status = :status")
+    int countTasksAssignedByAdmin(
+            @Param("admin") User admin,
+            @Param("status") Task.Status status);
 
     List<Task> findByAssignedToAndStatus(User user, Task.Status status);
 

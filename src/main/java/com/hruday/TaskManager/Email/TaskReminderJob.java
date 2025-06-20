@@ -125,13 +125,13 @@ public class TaskReminderJob implements Job {
             String to = passwordResetToken.getUser().getEmail();
             String subject = "Reset Password ";
 
-            String body = String.format("""
+            String body = String.format(""" 
     <html>
         <body>
-            <h3>Use this token to reset your password:</h3>
+            <h3>Use this token to changeU  your password:</h3>
             <strong>%s</strong>
 
-            <h2>Go to this link and enter the token:</h2>
+            <h2>Link to change password:</h2>
             <a href="%s">%s</a>
         </body>
     </html>

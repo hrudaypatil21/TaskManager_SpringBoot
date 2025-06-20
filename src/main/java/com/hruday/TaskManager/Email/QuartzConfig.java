@@ -26,7 +26,7 @@ public class QuartzConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
                 .withIdentity("taskReminderTrigger")
-                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(9, 00)) // Run daily at 9 AM
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(11, 10)) // Run daily at 9 AM
                 .build();
     }
 

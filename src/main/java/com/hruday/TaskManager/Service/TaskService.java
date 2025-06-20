@@ -153,6 +153,24 @@ public class TaskService {
         return taskRepository.countByAssignedToAndStatus(user, status);
     }
 
+    @Transactional
+    public int getTaskCountByStatusAssignedBy(Authentication authentication, String statusStr) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return 0;
+        }
+
+        User user = (User) authentication.getPrincipal();
+
+        Task.Status status;
+        try {
+            status = Task.Status.valueOf(statusStr.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Invalid task status: " + statusStr);
+        }
+
+        return taskRepository.countTasksAssignedByAdmin(user, status);
+    }
+
     @Transactional(readOnly = true)
     public List<Task> searchTasks(String query, Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
@@ -161,6 +179,16 @@ public class TaskService {
 
         User user = (User) authentication.getPrincipal();
         return taskRepository.searchTasks(query.toLowerCase(), user.getEmpId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<Task> searchAdminTasks(String query, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        User user = (User) authentication.getPrincipal();
+        return taskRepository.searchAdminAssignedTasks(query.toLowerCase(), user.getEmpId());
     }
 
 }

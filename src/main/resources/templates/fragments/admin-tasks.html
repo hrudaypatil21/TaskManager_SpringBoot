@@ -17,9 +17,9 @@
                          name="query"
                          class="form-control rounded-start border-0"
                          placeholder="Search by title, description, or status..."
-                         hx-post="/tasks/search"
+                         hx-post="/tasks/admin-search"
                          hx-trigger="keyup changed delay:500ms, search"
-                         hx-target="#taskTableBody"
+                         hx-target="#adminTaskTableBody"
                          hx-indicator=".search-indicator"
                          style="background-color: #f8f9fa;">
                   <span class="input-group-text bg-white border-0">
@@ -46,7 +46,7 @@
                     <th >Action</th>
                   </tr>
                   </thead>
-                  <tbody id="taskTableBody">
+                  <tbody id="adminTaskTableBody" >
                   <tr th:each="task : ${tasks}">
                     <td>
                       <a th:text="${task.title}"
@@ -62,8 +62,9 @@
                       <div class="fw-semibold" th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due</div>
                       <div class="text-muted small" th:text="${#temporals.format(task.assignedDate, 'dd/MM/yyyy')}">Assigned</div>
                     </td>
-                    <td th:text="${task.assignedTo.empId}">
-                      Assignee
+                    <td >
+                      <div class="fw-semibold" th:text="${task.assignedTo.empName}">Name</div>
+                      <div class="text-muted small" th:text="${task.assignedTo.empId}">AssigneeId</div>
                     </td>
                     <td>
                         <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
