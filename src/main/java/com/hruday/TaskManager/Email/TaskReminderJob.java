@@ -38,7 +38,7 @@ public class TaskReminderJob implements Job {
         logger.info("TaskReminderJob started at {}", LocalDateTime.now());
 
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime upcoming = LocalDateTime.now().plusHours(12);
+        LocalDateTime upcoming = LocalDateTime.now().plusHours(24);
 
         try {
         List<Task> upcomingTasks = taskRepository.findAllByDueDateBetween(now, upcoming);

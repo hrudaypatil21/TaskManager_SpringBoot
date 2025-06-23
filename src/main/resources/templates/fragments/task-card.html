@@ -1,18 +1,75 @@
 <!-- Table 1 - Bootstrap Brain Component -->
-<div th:fragment="taskCard" id="taskList">
-    <h3 class="card-title widget-card-title mb-4 text-center fw-bold">Your Tasks</h3>
+<div th:fragment="taskCard" id="taskList" style="margin-top:30px;">
 
+    <h3 class="card-title widget-card-title mb-4 text-center fw-bold">Your Tasks</h3>
+    <div class="task-status-container" style="display: flex; gap: 1rem; justify-content: space-around;">
+
+        <div class="task-card"
+             hx-post="/tasks/search"
+             hx-vals='{"query": "TODO"}'
+             hx-trigger="click"
+             hx-target="#taskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>To Do</h2>
+            <div id="todoCount"
+                 hx-get="/task/status-count?status=TODO"
+                 hx-trigger="load"
+                 hx-target="#todoCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+
+        <div class="task-card"
+             hx-post="/tasks/search"
+             hx-vals='{"query": "IN_PROGRESS"}'
+             hx-trigger="click"
+             hx-target="#taskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>In Progress</h2>
+            <div id="inProgressCount"
+                 hx-get="/task/status-count?status=IN_PROGRESS"
+                 hx-trigger="load"
+                 hx-target="#inProgressCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+
+        <div class="task-card"
+             hx-post="/tasks/search"
+             hx-vals='{"query": "DONE"}'
+             hx-trigger="click"
+             hx-target="#taskTableBody"
+             hx-swap="innerHTML"
+             hx-indicator=".search-indicator"
+             style="cursor: pointer;">
+            <h2>Done</h2>
+            <div id="doneCount"
+                 hx-get="/task/status-count?status=DONE"
+                 hx-trigger="load"
+                 hx-target="#doneCount"
+                 hx-swap="innerHTML">
+                Loading...
+            </div>
+        </div>
+
+        <!--  <div th:replace="~{fragments/task-card :: taskCard}"></div>-->
+
+    </div>
     <section class="py-3 py-md-4">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-lg-10 col-xl-9">
                     <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
                         <div class="card-body p-4">
-
 <!--                            hx-post="/tasks/search"-->
 <!--                            hx-target="#taskTableBody"-->
 <!--                            hx-trigger="keyup changed delay:500ms, search"-->
-
                             <form class="mb-4">
                                 <div class="input-group input-group-lg shadow-sm">
                                     <input type="search"
@@ -39,7 +96,6 @@
     <option value="ASSIGNED_NEWEST">Assigned Newest</option>
     <option value="ASSIGNED_OLDEST">Assigned Oldest</option>
 </select>
-
                     <i class="bi bi-search"></i>
                   </span>
                                 </div>
@@ -50,7 +106,6 @@
                                     Searching...
                                 </div>
                             </form>
-
                             <!-- Task Table -->
                             <div class="table-responsive rounded-4 shadow-sm">
                                 <table class="table table-hover align-middle bg-white rounded-4 overflow-hidden">
@@ -85,7 +140,7 @@
                                         <td>
                         <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
                               th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
-                              th:text="${task.status.name().toUpperCase()}">
+                              th:text="${task.status.displayName}">
                           Status
                         </span>
                                         </td>
@@ -93,7 +148,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>

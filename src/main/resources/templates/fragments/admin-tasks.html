@@ -1,9 +1,9 @@
 <!-- Table 1 - Bootstrap Brain Component -->
-<div th:fragment="adminTaskTable" id="taskList">
+<div th:fragment="adminTaskTable" id="taskList"  class="admin-task-card">
   <div  sec:authorize="hasRole('ROLE_ADMIN')">
   <h3 class="card-title widget-card-title mb-4 text-center fw-bold">Assigned Tasks</h3>
-
-  <section class="py-3 py-md-4">
+    <div th:replace="~{fragments/task-count-card :: adminTaskCountCard}"></div>
+    <section class="py-3 py-md-4">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9">
@@ -84,7 +84,7 @@
                     <td>
                         <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
                               th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
-                              th:text="${task.status.name().toUpperCase()}">
+                              th:text="${task.status.displayName}">
                           Status
                         </span>
                     </td>

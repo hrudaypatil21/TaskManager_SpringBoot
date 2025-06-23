@@ -45,9 +45,16 @@ public class Task {
 
 
     public enum Status {
-        TODO,
-        IN_PROGRESS,
-        DONE
+        TODO, IN_PROGRESS, DONE;
+
+        public String getDisplayName() {
+            switch (this) {
+                case DONE: return "Done";
+                case IN_PROGRESS: return "In Progress";
+                case TODO: return "To Do";
+                default: return this.name().replace('_', ' ').toLowerCase();
+            }
+        }
     }
 }
 //        private final String displayName;

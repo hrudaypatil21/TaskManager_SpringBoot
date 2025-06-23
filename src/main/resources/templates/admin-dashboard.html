@@ -304,6 +304,23 @@
   color: #ffffff;
 }
 
+.admin-task-card {
+  margin-top: 30px;
+  padding-top: 16px; /* Add top padding */
+  position: relative;
+}
+
+.admin-task-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0%;
+  right: 0%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ccc, transparent);
+}
+
+
         <!--/* Optional hover effect */-->
         <!--.badge:hover {-->
         <!--  opacity: 0.85;-->
