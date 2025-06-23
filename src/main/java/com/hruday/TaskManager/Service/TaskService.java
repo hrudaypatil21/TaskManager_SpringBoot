@@ -1,6 +1,5 @@
 package com.hruday.TaskManager.Service;
 
-
 import com.hruday.TaskManager.DTO.TaskDTO.CreateTaskDTO;
 import com.hruday.TaskManager.DTO.TaskDTO.TaskResponseDTO;
 import com.hruday.TaskManager.DTO.TaskDTO.UpdateTaskDTO;
@@ -9,6 +8,7 @@ import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -191,4 +191,31 @@ public class TaskService {
         return taskRepository.searchAdminAssignedTasks(query.toLowerCase(), user.getEmpId());
     }
 
+    public List<Task> getSortedTasks(Authentication authentication, String sortOption) {
+        if(authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+        User user = (User)  authentication.getPrincipal();
+        return switch (sortOption) {
+            case "DUE_EARLIEST" -> taskRepository.findAllByAssignedToOrderByDueDateAsc(user);
+            case "DUE_LATEST" -> taskRepository.findAllByAssignedToOrderByDueDateDesc(user);
+            case "ASSIGNED_OLDEST" -> taskRepository.findAllByAssignedToOrderByAssignedDateAsc(user);
+            case "ASSIGNED_NEWEST" -> taskRepository.findAllByAssignedToOrderByAssignedDateDesc(user);
+            default -> taskRepository.findByAssignedToId(user.getId());
+        };
+    }
+
+    public List<Task> getAdminSortedTasks(Authentication authentication, String sortOption) {
+        if(authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("User not authenticated");
+        }
+        User user = (User)  authentication.getPrincipal();
+        return switch (sortOption) {
+            case "DUE_EARLIEST" -> taskRepository.findTasksAssignedByUserToOthersOrderByDueDateAsc(user.getId());
+            case "DUE_LATEST" -> taskRepository.findTasksAssignedByUserToOthersOrderByDueDateDesc(user.getId());
+            case "ASSIGNED_OLDEST" -> taskRepository.findTasksAssignedByUserToOthersOrderByAssignedDateAsc(user.getId());
+            case "ASSIGNED_NEWEST" -> taskRepository.findTasksAssignedByUserToOthersOrderByAssignedDateDesc(user.getId());
+            default -> taskRepository.findTasksAssignedByUserToOthers(user.getId());
+        };
+    }
 }

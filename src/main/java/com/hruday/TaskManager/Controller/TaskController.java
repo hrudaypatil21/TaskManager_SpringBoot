@@ -7,8 +7,6 @@ import com.hruday.TaskManager.Email.TaskReminderJob;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Service.TaskService;
-import com.hruday.TaskManager.Service.UserService;
-import org.hibernate.query.NativeQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +17,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @RestController

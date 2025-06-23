@@ -1,7 +1,5 @@
 package com.hruday.TaskManager.Controller;
 
-import com.hruday.TaskManager.DTO.TaskDTO.TaskResponseDTO;
-import com.hruday.TaskManager.DTO.TaskDTO.UpdateTaskDTO;
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Security.AuthHelper;
@@ -11,19 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.jaas.AuthorityGranter;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.security.Principal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
@@ -48,6 +40,30 @@ public class TaskViewController {
         model.addAttribute("tasks", tasks);
 
         return "fragments/task-rows :: taskRows";
+    }
+
+    @PostMapping("/tasks/sort")
+    public String sortTasks(
+            @RequestParam String sortOption,
+            Model model,
+            Authentication authentication) {
+
+        List<Task> tasks = taskService.getSortedTasks(authentication, sortOption);
+        model.addAttribute("tasks", tasks);
+
+        return "fragments/task-rows :: taskRows";
+    }
+
+    @PostMapping("/tasks/admin-sort")
+    public String sortAdminTasks(
+            @RequestParam String sortOption,
+            Model model,
+            Authentication authentication) {
+
+        List<Task> tasks = taskService.getAdminSortedTasks(authentication, sortOption);
+        model.addAttribute("tasks", tasks);
+
+        return "fragments/admin-task-rows :: adminTaskRows";
     }
 
     @PostMapping("/tasks/admin-search")

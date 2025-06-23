@@ -23,8 +23,23 @@
                          hx-indicator=".search-indicator"
                          style="background-color: #f8f9fa;">
                   <span class="input-group-text bg-white border-0">
+                    <select id="adminTaskSort"
+                            name="sortOption"
+                            class="form-control rounded-start border-0"
+                            hx-post="/tasks/admin-sort"
+                            hx-trigger="change"
+                            hx-target="#adminTaskTableBody"
+                            hx-swap="innerHTML"
+                            hx-indicator=".search-indicator">
+                    <option disabled selected value="">Sort</option>
+                    <option value="DUE_LATEST">Due Latest</option>
+                    <option value="DUE_EARLIEST">Due Earliest</option>
+                    <option value="ASSIGNED_NEWEST">Assigned Newest</option>
+                    <option value="ASSIGNED_OLDEST">Assigned Oldest</option>
+                  </select>
                     <i class="bi bi-search"></i>
                   </span>
+
                 </div>
                 <div class="search-indicator htmx-indicator mt-2 ms-1 text-muted small d-flex align-items-center gap-2">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status">

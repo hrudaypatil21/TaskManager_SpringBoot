@@ -14,7 +14,7 @@ public class ErrorControllerImpl implements ErrorController {
     public String handleError(HttpServletRequest request, Model model) {
         Object statusCode = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
         model.addAttribute("statusCode", statusCode);
-        return "error-page"; // Thymeleaf template name (error-page.html)
+        return "error-page";
     }
 
     public String getErrorPath() {

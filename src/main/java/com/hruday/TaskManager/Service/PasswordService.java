@@ -56,7 +56,7 @@ public class PasswordService {
         token.setUser(user);
         token.setToken(generatedToken);
         token.setTokenIssueDate(LocalDateTime.now());
-        token.setExpiryDate(LocalDateTime.now().plusMinutes(20));
+        token.setExpiryDate(LocalDateTime.now().plusMinutes(20 ));
 
         PasswordResetToken savedToken = passwordRepository.save(token);
         logger.info("Saved token with ID: {}", savedToken.getId());

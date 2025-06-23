@@ -1,12 +1,10 @@
 package com.hruday.TaskManager.Controller;
 
 import com.hruday.TaskManager.Email.TaskReminderJob;
-import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
 import com.hruday.TaskManager.Repository.TaskRepository;
 import com.hruday.TaskManager.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 

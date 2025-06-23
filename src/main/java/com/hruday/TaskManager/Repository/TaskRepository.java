@@ -2,7 +2,6 @@ package com.hruday.TaskManager.Repository;
 
 import com.hruday.TaskManager.Entity.Task;
 import com.hruday.TaskManager.Entity.User;
-import org.apache.logging.log4j.message.StringFormattedMessage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -72,4 +71,20 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 
     List<Task> findByAssignedTo(User user);
 
+    List<Task> findAllByAssignedToOrderByDueDateAsc(User user);
+    List<Task> findAllByAssignedToOrderByDueDateDesc(User user);
+    List<Task> findAllByAssignedToOrderByAssignedDateAsc(User user);
+    List<Task> findAllByAssignedToOrderByAssignedDateDesc(User user);
+
+    @Query("SELECT t FROM Task t WHERE t.assignedBy.id = :userId AND t.assignedTo.id <> :userId ORDER BY t.dueDate ASC")
+    List<Task> findTasksAssignedByUserToOthersOrderByDueDateAsc(@Param("userId") int userId);
+
+    @Query("SELECT t FROM Task t WHERE t.assignedBy.id = :userId AND t.assignedTo.id <> :userId ORDER BY t.dueDate DESC")
+    List<Task> findTasksAssignedByUserToOthersOrderByDueDateDesc(@Param("userId") int userId);
+
+    @Query("SELECT t FROM Task t WHERE t.assignedBy.id = :userId AND t.assignedTo.id <> :userId ORDER BY t.assignedDate ASC")
+    List<Task> findTasksAssignedByUserToOthersOrderByAssignedDateAsc(@Param("userId") int userId);
+
+    @Query("SELECT t FROM Task t WHERE t.assignedBy.id = :userId AND t.assignedTo.id <> :userId ORDER BY t.assignedDate DESC")
+    List<Task> findTasksAssignedByUserToOthersOrderByAssignedDateDesc(@Param("userId") int userId);
 }
