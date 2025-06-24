@@ -12,6 +12,21 @@ public class TaskManagerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TaskManagerApplication.class, args);
+
+		Runtime rt = Runtime.getRuntime();
+
+		int numProc = Runtime.getRuntime().availableProcessors();
+
+		long total_mem = rt.totalMemory();
+
+		long free_mem = rt.freeMemory();
+
+		long used_mem = total_mem - free_mem;
+
+		System.out.println("Amount of used memory: " + used_mem);
+		System.out.println("Number of processors: " + numProc);
+
+
 	}
 
 	@Bean

@@ -7,7 +7,7 @@
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9">
-          <div class="card border-0 shadow-sm rounded-4 bg-light-subtle">
+          <div class="card border-0" style="background-color: #0e1b2c ;">
             <div class="card-body p-4">
 
               <!-- Search Bar -->
@@ -50,9 +50,9 @@
               </form>
 
               <!-- Task Table -->
-              <div class="table-responsive rounded-4 shadow-sm">
-                <table class="table table-hover align-middle bg-white rounded-4 overflow-hidden">
-                  <thead class="table-light">
+              <div class="table-responsive " style="background-color: #0e1b2c ;">
+                <table class="table table-hover align-middle overflow-hidden rounded-4" >
+                  <thead >
                   <tr>
                     <th>Title</th>
                     <th>Due Date</th>
@@ -82,7 +82,7 @@
                       <div class="text-muted small" th:text="${task.assignedTo.empId}">AssigneeId</div>
                     </td>
                     <td>
-                        <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
+                        <span class="badge rounded-pill px-3 py-2 fw-semibold"
                               th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
                               th:text="${task.status.displayName}">
                           Status

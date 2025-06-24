@@ -18,9 +18,9 @@
             Assignee
         </td>
         <td>
-                        <span class="badge rounded-pill px-3 py-2 text-uppercase fw-semibold"
+                        <span class="badge rounded-pill px-3 py-2  fw-semibold"
                               th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
-                              th:text="${task.status.name().toUpperCase()}">
+                              th:text="${task.status.displayName}">
                           Status
                         </span>
         </td>

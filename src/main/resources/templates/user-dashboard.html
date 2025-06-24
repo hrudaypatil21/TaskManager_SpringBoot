@@ -11,10 +11,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/tables/table-1/assets/css/table-1.css">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main5.min.js"></script>
     <style>
 
         body {
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
           background-color: #0e1b2c ;
           color: #e2e8f0; /* Default light text */
           font-family: 'Segoe UI', sans-serif;
@@ -29,6 +30,21 @@
           background-color: #162c4b;
         }
 
+        /*  Sidebar */
+/* Base sidebar styling */
+#userSidebar {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  will-change: transform, opacity;
+}
+
+/* Hide sidebar with slide-out effect */
+#userSidebar.slide-out {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
 
         /* Task Form */
                 .task-form-container {
@@ -40,6 +56,7 @@
 
             .task-form {
                 width: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 
                 background-color:  #0e1b2c ;
                 border-radius: 10px;
@@ -208,20 +225,76 @@
           margin-bottom: 2rem;
           padding: 1rem;
         }
+.glass-card {
+  width: 240px;
+  height: 360px;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
 
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
         /* Task Card Styling */
-        .task-card {
-          background-color: #1e293b; /* Dark blue-gray */
-          color: #e2e8f0; /* Light gray text */
-          border: 1px solid #334155; /* Subtle border */
-          border-radius: 0.75rem;
-          padding: 1rem 1.5rem;
-          text-align: center;
-          min-width: 150px;
-          flex: 1 1 200px;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-          transition: background-color 0.3s ease, color 0.3s ease;
-        }
+.task-card {
+  width: 150px;              /* Fixed width */
+  height: 150px;             /* Fixed height to keep square */
+    background: #1e293b;
+     backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.75rem;
+  padding: 0;
+  text-align: center;
+box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 0 auto; /* Prevent card from stretching */
+}
+
 
         .task-card:hover {
           background-color: #2d3f58; /* Slightly lighter on hover */
@@ -239,13 +312,23 @@
         }
 
         /* Status Badge Styling */
-        .badge {
+.badge {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.75rem;
+        backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
           padding: 0.4em 0.8em;
           font-weight: 600;
           border-radius: 2rem;
           font-size: 0.875rem;
           text-transform: capitalize;
           display: inline-block;
+          box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Task Status Colors */
@@ -256,7 +339,7 @@
 
         .badge.bg-in-progress {
           background-color: #ffc107;
-          color: #000000 !important;
+          color: #ffffff !important;
         }
 
         .badge.bg-done {
@@ -313,6 +396,43 @@
         <!--  opacity: 0.85;-->
         <!--  transition: opacity 0.2s ease;-->
         <!--}-->
+.table tr:last-child td {
+  border-bottom: none !important;
+}
+
+        /* Header styling */
+.table.table-hover.align-middle.overflow-hidden.rounded-4 thead {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+.table.table-hover.align-middle.overflow-hidden.rounded-4 tbody tr {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-bottom-color: #2d3f58 !important; /* Add if needed */
+}
+
+.table.table-hover.align-middle.overflow-hidden.rounded-4 tbody tr:hover {
+  background-color: #2d3f58 !important;
+}
+
+<!--        .table {-->
+<!--  &#45;&#45;bs-table-color-type: initial;-->
+<!--  &#45;&#45;bs-table-bg-type: initial;-->
+<!--  &#45;&#45;bs-table-color-state: initial;-->
+<!--  &#45;&#45;bs-table-bg-state: initial;-->
+<!--  &#45;&#45;bs-table-color: #e2e8f0;-->
+<!--  &#45;&#45;bs-table-bg: #2d3f58;-->
+<!--  &#45;&#45;bs-table-border-color: #e2e8f0;-->
+<!--  &#45;&#45;bs-table-accent-bg: transparent;-->
+<!--  &#45;&#45;bs-table-striped-color: #e2e8f0;-->
+<!--  &#45;&#45;bs-table-striped-bg: #2d3f58;-->
+<!--  &#45;&#45;bs-table-active-color: #e2e8f0;-->
+<!--  &#45;&#45;bs-table-active-bg: #2d3f58;-->
+<!--  &#45;&#45;bs-table-hover-color: #e2e8f0;-->
+<!--  &#45;&#45;bs-table-hover-bg: #2d3f58;-->
+<!--}-->
+
 
     </style>
 </head>
@@ -367,57 +487,36 @@
 </div>
 
 <script>
-<!--    document.getElementById('toggleSidebarBtn').addEventListener('click', function () {-->
-<!--      const sidebar = document.getElementById('userSidebar');-->
-<!--      sidebar.classList.toggle('d-none');-->
-<!--    });-->
 
-        document.addEventListener('click', function(event) {
-        if (event.target.id === 'toggleSidebarBtn') {
-            const sidebar = document.getElementById('userSidebar');
-            sidebar.classList.toggle('d-none');
-        }
-    });
-
-      document.body.addEventListener("htmx:afterRequest", function(evt) {
-    if (evt.detail.xhr.status === 200) {
-      htmx.trigger("#mainContentContainer", "load");
-    }
-  });
-
-
-
-<!--        // HTMX after swap handler to prevent style conflicts-->
-<!--    document.body.addEventListener('htmx:afterSwap', function(evt) {-->
-<!--        if (evt.detail.target.id === 'taskContentContainer') {-->
-<!--            // Add a specific class to the loaded content-->
-<!--            const content = document.getElementById('taskContentContainer');-->
-<!--            content.classList.add('task-form-content');-->
-<!--        }-->
-<!--    });-->
-
-<!--document.addEventListener('DOMContentLoaded', function() {-->
-<!--    // Prevent default behavior for HTMX links-->
-<!--    document.body.addEventListener('click', function(event) {-->
-<!--        if (event.target.hasAttribute('hx-get')) {-->
-<!--            event.preventDefault();-->
-<!--        }-->
-<!--    });-->
-
-<!--    // Sidebar toggle functionality-->
-<!--    document.getElementById('toggleSidebarBtn').addEventListener('click', function() {-->
+<!--    document.addEventListener('click', function (event) {-->
+<!--      if (event.target.id === 'toggleSidebarBtn') {-->
 <!--        const sidebar = document.getElementById('userSidebar');-->
-<!--        sidebar.classList.toggle('d-none');-->
+<!--        sidebar.classList.toggle('slide-out');-->
+<!--      }-->
 <!--    });-->
 
-<!--    // Initialize HTMX-->
-<!--    htmx.process(document.body);-->
-<!--});-->
+  <!--    document.getElementById('toggleSidebarBtn').addEventListener('click', function () {-->
+  <!--      const sidebar = document.getElementById('userSidebar');-->
+  <!--      sidebar.classList.toggle('d-none');-->
+  <!--    });-->
 
-  window.addEventListener('DOMContentLoaded', function () {
-    // Trigger the HTMX request once on initial page load
-    document.getElementById('loadTasksBtn').click();
-  });
+         document.addEventListener('click', function(event) {
+         if (event.target.id === 'toggleSidebarBtn') {
+             const sidebar = document.getElementById('userSidebar');
+             sidebar.classList.toggle('d-none');
+         }
+     });
+
+       document.body.addEventListener("htmx:afterRequest", function(evt) {
+     if (evt.detail.xhr.status === 200) {
+       htmx.trigger("#mainContentContainer", "load");
+     }
+   });
+
+   window.addEventListener('DOMContentLoaded', function () {
+     // Trigger the HTMX request once on initial page load
+     document.getElementById('loadTasksBtn').click();
+   });
 </script>
 </body>
 </html>

@@ -19,9 +19,9 @@
         </td>
         <td th:text="${task.assignedBy.empId == task.assignedTo.empId ? 'Self' : task.assignedBy.empName}">Assigner</td>
         <td>
-            <span class="badge"
+            <span class="badge rounded-pill px-3 py-2  fw-semibold"
                   th:classappend="' bg-' + ${task.status.name().toLowerCase().replace('_', '-')}"
-                  th:text="${task.status.name()}">
+                  th:text="${task.status.displayName}">
                 Status
             </span>
         </td>
