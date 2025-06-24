@@ -211,8 +211,8 @@
 
         /* Task Card Styling */
         .task-card {
-  width: 150px;              /* Fixed width */
-  height: 150px;             /* Fixed height to keep square */
+  width: 125px;              /* Fixed width */
+  height: 125px;             /* Fixed height to keep square */
     background: #1e293b;
      backdrop-filter: blur(7px);
   -webkit-backdrop-filter: blur(7px);
@@ -372,7 +372,85 @@ box-shadow:
   background-color: #2d3f58 !important;
 }
 
+.remind-button {
+background: #4db3a5;
+color: #f5fffe !important;
+             backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+    text-align: center;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 0 auto;
+  padding: 0.4em 0.8em;
+          font-weight: 600;
+          border-radius: 2rem;
+          font-size: 0.875rem;
+        }
 
+        .remind-button:hover {
+        background: #69f5e2;
+color: #334745 !important;
+transition: 0.3s ease;
+        }
+
+        .glass-input {
+            background-color: #f7fcfb;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+   backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+color: #334745 !important;
+}
+
+        .glass-input:focus {
+  border-color: #f7fcfb;
+  outline: none;
+}
+        .sort-dropdown:focus {
+          border-color: #f7fcfb;
+  outline: none;
+        }
+
+        .sort-dropdown {
+         background-color: #f7fcfb;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+   backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+color: #334745 !important;
+        }
+
+                .dropdown-menu {
+        min-width:7.5rem !important;
+        }
+
+         #updateFormName {
+        color: #000;
+        }
+
+         #updateFormName:hover{
+        color: #2e66fa;
+        transition:0.3s ease;
+        }
 
     </style>
 </head>
@@ -383,7 +461,7 @@ box-shadow:
         <button class="btn " id="toggleSidebarBtn">☰ Menu</button>
         <span class="navbar-brand mb-0 h1">Admin Dashboard</span>
         <span>
-            <div class="dropdown">
+            <div class="dropdown" style="margin-right: 50px">
           <a href="#" class="d-flex align-items-center tex-white text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
             <strong th:text="${empName}">Username Employee ID</strong>
           </a>

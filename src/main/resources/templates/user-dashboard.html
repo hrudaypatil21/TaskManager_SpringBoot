@@ -416,6 +416,56 @@ box-shadow:
   background-color: #2d3f58 !important;
 }
 
+        .glass-input {
+            background-color: #f7fcfb;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+   backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+color: #334745 !important;
+}
+
+        .glass-input:focus {
+  border-color: #f7fcfb;
+  outline: none;
+}
+        .sort-dropdown:focus {
+          border-color: #f7fcfb;
+  outline: none;
+        }
+
+        .sort-dropdown {
+         background-color: #f7fcfb;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
+    transition: background-color 0.3s ease, color 0.3s ease;
+   backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+color: #334745 !important;
+        }
+
+        .dropdown-menu {
+        min-width:7.5rem !important;
+        }
+
+        #updateFormName {
+        color: #000;
+        }
+
+             #updateFormName:hover{
+        color: #2e66fa;
+        transition:0.3s ease;
+        }
+
 <!--        .table {-->
 <!--  &#45;&#45;bs-table-color-type: initial;-->
 <!--  &#45;&#45;bs-table-bg-type: initial;-->
@@ -443,11 +493,11 @@ box-shadow:
         <button class="btn " id="toggleSidebarBtn">☰ Menu</button>
         <span class="navbar-brand mb-0 h1">User Dashboard</span>
         <span>
-            <div class="dropdown">
+            <div class="dropdown" style="margin-right: 50px">
           <a href="#" class="d-flex align-items-center tex-white text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
             <strong th:text="${empName}">Username Employee ID</strong>
           </a>
-          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+          <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2" style="width:50px;">
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><hr class="dropdown-divider"></li>

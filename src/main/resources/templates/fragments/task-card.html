@@ -71,20 +71,20 @@
 <!--                            hx-target="#taskTableBody"-->
 <!--                            hx-trigger="keyup changed delay:500ms, search"-->
                             <form class="mb-4">
-                                <div class="input-group input-group-lg shadow-sm">
+                                <div class="input-group input-group-lg">
                                     <input type="search"
                                            name="query"
-                                           class="form-control rounded-start border-0"
+                                           class="form-control rounded-start border-0 glass-input"
                                            placeholder="Search by title, description, or status..."
                                            hx-post="/tasks/search"
                                            hx-trigger="keyup changed delay:500ms, search"
                                            hx-target="#taskTableBody"
-                                           hx-indicator=".search-indicator"
-                                           style="background-color: #f8f9fa;">
-                                    <span class="input-group-text bg-white border-0">
+                                           hx-indicator=".search-indicator">
+                                    <span class="input-group-text border-0" style="background: #f7fcfb; color: #334745 !important;">
                                         <select id="taskSort"
                                                 name="sortOption"
-                                                class="form-control rounded-start border-0"
+                                                style="background: #f7fcfb; color: #334745 !important;"
+                                                class="form-control rounded-start border-0 sort-dropdown "
                                                 hx-post="/tasks/sort"
                                                 hx-trigger="change"
                                                 hx-target="#taskTableBody"
@@ -121,7 +121,8 @@
                                     <tr th:each="task : ${tasks}">
                                         <td>
                                             <a th:text="${task.title}"
-                                               class="text-decoration-none fw-medium text-primary"
+                                               class="text-decoration-none fw-semibold "
+                                               id="updateFormName"
                                                href="javascript:void(0)"
                                                hx-target="body"
                                                th:attr="hx-get=@{/task/expanded/{id}(id=${task.id})}"

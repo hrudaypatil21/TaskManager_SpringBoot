@@ -102,8 +102,16 @@
       color: #e5e5e5;
   }
   button{
+    backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 4px 2px rgba(255, 255, 255, 0.2);
       margin-top: 50px;
-      width: 100%;
+      width: 175px;
       background-color: #ffffff;
       color: #080710;
       padding: 15px 0;
@@ -144,6 +152,11 @@
     color: #ffffff;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.login-button {
+  display: flex;
+  justify-content: center;
+}
     </style>
 </head>
 <body>
@@ -170,10 +183,12 @@
     <!--                       class="mr-2">-->
     <!--                    </span>-->
 
-    <button type="submit">Log In</button>
+    <div class="login-button">
+        <button type="submit">Log In</button>
+    </div>
 
     <div style="margin-top: 20px; text-align: center; text-decoration: none; cursor: pointer;">
-    <a href="/reset-password">Reset Password</a>
+        <a href="/reset-password">Reset Password</a>
     </div>
 
     <!--    <div class="social">-->
@@ -184,50 +199,3 @@
 </body>
 </html>
 
-<!--<!doctype html>-->
-<!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--    <meta name="color-scheme" content="light dark" />-->
-<!--    <title>Task Management System</title>-->
-<!--    <link rel="stylesheet" href="/css/login.css" />-->
-<!--    <script src="https://unpkg.com/htmx.org@2.0.1"></script>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div>-->
-<!--    <h1>Task Management System</h1>-->
-<!--    <div>-->
-<!--        <h2>Login</h2>-->
-<!--        <form method="post"-->
-<!--              action="/login"-->
-<!--              class="space-y-4">-->
-<!--            <div>-->
-<!--                <label for="username" class="block mb-1">Employee ID</label>-->
-<!--                <input type="text" id="username" name="username" required-->
-<!--                       class="w-full p-2 border rounded">-->
-<!--            </div>-->
-
-<!--            <div>-->
-<!--                <label for="password" class="block mb-1">Password</label>-->
-<!--                <input type="password" id="password" name="password" required-->
-<!--                       class="w-full p-2 border rounded">-->
-<!--            </div>-->
-
-<!--            <div>-->
-<!--                <span>-->
-<!--                <label for="rememberMe" class="block mb-1">Remember Me</label>-->
-<!--                <input type="checkbox" id="rememberMe" name="rememberMe"-->
-<!--                       class="mr-2">-->
-<!--                    </span>-->
-<!--            </div>-->
-
-<!--            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">-->
-<!--                Login-->
-<!--            </button>-->
-
-<!--        </form>-->
-<!--    </div>-->
-<!--</div>-->
-<!--</body>-->
-<!--</html>-->
